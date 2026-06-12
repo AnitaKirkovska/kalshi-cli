@@ -1,33 +1,35 @@
 # 🎲 kalshi-cli
 
-A tiny, zero-dependency CLI for reading live odds and placing trades on [Kalshi](https://kalshi.com) prediction markets. No `npm install`, no SDK, no fuss. Node's built-in `crypto` signs every request natively.
+A tiny, zero-dependency CLI for reading live odds and placing trades on [Kalshi](https://kalshi.com) prediction markets. Works across **every** Kalshi category, sports ⚽, Fed decisions 🏦, elections 🗳️, weather 🌦️, anything. No `npm install`, no SDK, no fuss. Node's built-in `crypto` signs every request natively.
 
-Built for [AgentCup](https://agentcup.co) 🏆 (AI agents predicting the 2026 World Cup): pull the market's implied probabilities *before* every prediction, and only bet when your number beats the market's price. 📈
+The headline trick: it pulls the market's **de-vigged implied probabilities** for any event, so you can line them up against your own model and bet only when you have an edge. 📈
 
 ## ⚡ Quick start
 
 ```bash
-# 📊 market data, no auth needed:
-KALSHI_ENV=prod node kalshi.js odds USA PAR --date 26JUN12
+# 📊 any event, de-vigged probabilities, no auth needed:
+KALSHI_ENV=prod node kalshi.js event KXPRESPARTY-2028
+KALSHI_ENV=prod node kalshi.js event KXWCGAME-26JUN12USAPAR
+
+# 🔍 browse + inspect:
 KALSHI_ENV=prod node kalshi.js markets --series KXWCGAME --limit 20
+KALSHI_ENV=prod node kalshi.js orderbook KXPRESPARTY-2028-DEM
 
 # 🔐 authenticated (needs a Kalshi API key):
 node kalshi.js balance
 node kalshi.js bet KXWCGAME-26JUN12USAPAR-USA yes 10 47
 ```
 
-`odds` finds the match market, reads each outcome's order book, and prints clean de-vigged win / draw / loss probabilities:
+`event` reads each outcome's order book and prints clean, de-vigged probabilities:
 
 ```
-USA vs Paraguay Winner?
-  USA   mid  47c   bid  46c / ask  47c
-  TIE   mid  30c   bid  29c / ask  30c
-  PAR   mid  25c   bid  24c / ask  25c
+2028 Presidential Election winner? (Party)
+  Democratic party    mid  59c   bid  58c / ask  59c
+  Republican party    mid  42c   bid  41c / ask  42c
 
   market implied probabilities (de-vigged):
-  USA   46.3%
-  TIE   29.4%
-  PAR   24.4%
+  Democratic party    58.5%
+  Republican party    41.5%
 ```
 
 ## 🪤 The three things that will trip you up
@@ -44,10 +46,10 @@ Real prices live in the **order book**: `GET /markets/{ticker}/orderbook`. The t
 
 > **best YES ask = 1 − (best NO bid)** — because buying YES is the same as selling NO.
 
-The `odds` command does all this math for you.
+The `event` and `odds` commands do this math for you.
 
-### 3️⃣ Books open near match time ⏰
-Kalshi soccer volume is thin. A market can sit `active` for days with an empty book, then fill within hours of kickoff. A *live* World Cup match showed ~$24M volume with deep two-sided books. Empty book ≠ bug.
+### 3️⃣ Books open near event time ⏰
+Liquidity is thin until an event is close or live. A market can sit `active` for days with an empty book, then fill within hours. A *live* World Cup match showed ~$24M volume with deep two-sided books. Empty book ≠ bug.
 
 ## 🔑 Auth
 
@@ -67,14 +69,25 @@ Each request signs `timestamp_ms + METHOD + path` with **RSA-PSS / SHA256**, bas
 
 | command | what it does |
 |---|---|
-| `odds <A> <B> [--date YYMMMDD]` | 🎯 de-vigged win/draw/loss probabilities for a match |
+| `event <EVENT_TICKER>` | 🎯 de-vigged probabilities for **any** event (the workhorse) |
+| `odds <A> <B> [--date YYMMMDD]` | ⚽ World Cup head-to-head shortcut |
 | `markets [--series S] [--status open] [--limit N]` | 📋 list markets in a series |
 | `market <TICKER>` / `orderbook <TICKER>` | 🔍 raw market / order book JSON |
 | `balance` / `positions` / `orders` | 💰 account state (auth) |
 | `bet <TICKER> <yes\|no> <count> <price_cents>` | 🎲 place an order (auth, price 1–99¢) |
 | `cancel <ORDER_ID>` | ❌ cancel a resting order (auth) |
 
-## ⚽ World Cup series (2026)
+## 🧭 Finding tickers
+
+Everything on Kalshi nests as **series → event → markets**:
+
+- **Series** = a recurring template (`KXWCGAME`, `KXPRESPARTY`, `KXHIGHNY`). List them: `GET /series?category=Sports` (or `Politics`, `Economics`, `Climate`…).
+- **Event** = one instance (`KXWCGAME-26JUN12USAPAR`, `KXPRESPARTY-2028`). Feed this to `event`.
+- **Market** = one yes/no outcome inside an event (`...-USA`, `...-DEM`). This is what you `bet` on.
+
+Browse the live UI at [kalshi.com](https://kalshi.com) and the URL slugs map straight to these tickers.
+
+## ⚽ World Cup quick reference (2026)
 
 | series | what |
 |---|---|
@@ -82,19 +95,18 @@ Each request signs `timestamp_ms + METHOD + path` with **RSA-PSS / SHA256**, bas
 | `KXWCSCORE` | exact correct-score binaries |
 | `KXMENWORLDCUP` | tournament winner |
 
-Discover everything with `GET /series?category=Sports`. Ticker dates are `YYMMMDD` uppercase (`26JUN12`); team codes are 3-letter (`USA`, `PAR`, `CAN`, `BIH`).
+Ticker dates are `YYMMMDD` uppercase (`26JUN12`); team codes are 3-letter. The `odds USA PAR --date 26JUN12` shortcut just resolves these for you.
 
 ## 🧮 What "de-vigging" means
 
-A 3-way match has three YES markets. Their prices sum to **more** than 100% (that's the house edge, the vig). Normalize each by the total and you get the market's *true* implied probability. Compare that to your model's number. Bet the side where you're higher. 🟢
+The outcome prices in an event sum to **more** than 100% (that's the house edge, the vig). Normalize each by the total and you get the market's *true* implied probability. Compare that to your model's number. Bet the side where you're higher. 🟢
 
 ## 📐 Betting discipline
 
-1. Run `odds` before locking any prediction.
+1. Run `event` (or `odds`) before locking any view.
 2. Bet only when your probability clears the market's by a real margin (edge, not noise).
-3. Bet the win/draw/loss bar, not exact scorelines (markets are binary; scorelines are long-odds).
-4. Demo first. Always. 🧪
+3. Demo first. Always. 🧪
 
 ---
 
-Made for 🏆 [AgentCup](https://agentcup.co). MIT.
+Born from 🏆 [AgentCup](https://agentcup.co), generalized for any market. MIT.

@@ -84,6 +84,40 @@ function flags(args) {
   return out;
 }
 
+// Read live order-book price for one market. The summary fields (yes_bid/ask)
+// are deprecated and return null; real prices live in the orderbook.
+// yes_dollars = resting bids to buy YES, no_dollars = bids to buy NO.
+// Best YES ask = 1 - best NO bid (buying YES == selling NO).
+async function priceOf(ticker) {
+  const ob = (await req("GET", `/markets/${ticker}/orderbook`)).orderbook_fp || {};
+  const yes = ob.yes_dollars || [], no = ob.no_dollars || [];
+  const bid = yes.length ? parseFloat(yes[yes.length - 1][0]) : null;
+  const noBid = no.length ? parseFloat(no[no.length - 1][0]) : null;
+  const ask = noBid != null ? 1 - noBid : null;
+  const mid = bid != null && ask != null ? (bid + ask) / 2 : (bid ?? ask);
+  return { bid, ask, mid };
+}
+
+// De-vig a group of mutually-exclusive markets into normalized probabilities.
+// Works for ANY Kalshi event: sports, Fed decisions, elections, weather, etc.
+async function showImplied(markets, labelOf) {
+  const c = (x) => x != null ? (Math.round(x * 100) + "c").padStart(4) : "  - ";
+  const rows = [];
+  for (const m of markets) {
+    const p = await priceOf(m.ticker);
+    const label = labelOf ? labelOf(m) : (m.yes_sub_title || m.ticker.split("-").pop());
+    rows.push({ label, mid: p.mid });
+    console.log(`  ${String(label).padEnd(24)} mid ${c(p.mid)}   bid ${c(p.bid)} / ask ${c(p.ask)}`);
+  }
+  const sum = rows.reduce((s, x) => s + (x.mid || 0), 0);
+  if (sum > 0) {
+    console.log(`\n  market implied probabilities (de-vigged):`);
+    rows.forEach((x) => console.log(`  ${String(x.label).padEnd(24)} ${(100 * (x.mid || 0) / sum).toFixed(1)}%`));
+  } else {
+    console.log(`\n  no live pricing yet (book not open)`);
+  }
+}
+
 async function main() {
   const [cmd, ...rest] = process.argv.slice(2);
   const f = flags(rest);
@@ -107,40 +141,34 @@ async function main() {
       console.log(`\n${(d.markets || []).length} markets`);
       break;
     }
+    case "event": {
+      // event <EVENT_TICKER>  — de-vigged implied probabilities for ANY Kalshi event.
+      // Works across every category: sports, Fed, elections, weather, etc.
+      // e.g. node kalshi.js event KXWCGAME-26JUN12USAPAR
+      //      node kalshi.js event KXPRESPARTY-2028
+      const et = f._[0];
+      if (!et) throw new Error("usage: event <EVENT_TICKER>");
+      const d = await req("GET", `/events/${et}?with_nested_markets=true`);
+      const ev = d.event || {};
+      const ms = ev.markets || [];
+      if (!ms.length) { console.log(`no markets in event ${et}`); break; }
+      console.log(`\n${ev.title || et}`);
+      await showImplied(ms);
+      break;
+    }
     case "odds": {
-      // odds <TEAM1CODE> <TEAM2CODE> [--date YYMMMDD] [--series KXWCGAME]
-      // e.g. node kalshi.js odds USA PAR --date 26JUN12
+      // odds <CODE_A> <CODE_B> [--date YYMMMDD] [--series KXWCGAME]
+      // Convenience wrapper for World Cup head-to-heads. For anything else use `event`.
       const series = f.series || "KXWCGAME";
       const [a, b] = f._.map((s) => s.toUpperCase());
       const d = await req("GET", `/markets?series_ticker=${series}&status=open&limit=500`);
       const ms = (d.markets || []).filter((m) =>
-        m.ticker.includes(a + b) || m.ticker.includes(b + a)
-      ).filter((m) => !f.date || m.ticker.includes(f.date.toUpperCase()));
+        (m.ticker.includes(a + b) || m.ticker.includes(b + a)) &&
+        (!f.date || m.ticker.includes(f.date.toUpperCase()))
+      );
       if (!ms.length) { console.log(`no ${series} market for ${a}/${b}` + (f.date ? ` on ${f.date}` : "")); break; }
       console.log(`\n${ms[0].title}`);
-      // Real prices live in the orderbook, not the summary fields (Kalshi deprecated yes_bid/ask here).
-      // yes_dollars = bids to buy YES; no_dollars = bids to buy NO. Best YES ask = 1 - best NO bid.
-      const implied = [];
-      for (const m of ms) {
-        const ob = (await req("GET", `/markets/${m.ticker}/orderbook`)).orderbook_fp || {};
-        const yes = ob.yes_dollars || [], no = ob.no_dollars || [];
-        const bestYesBid = yes.length ? parseFloat(yes[yes.length - 1][0]) : null;       // highest someone pays for YES
-        const bestNoBid = no.length ? parseFloat(no[no.length - 1][0]) : null;            // highest someone pays for NO
-        const bestYesAsk = bestNoBid != null ? 1 - bestNoBid : null;                      // cheapest YES you can buy
-        const mid = bestYesBid != null && bestYesAsk != null ? (bestYesBid + bestYesAsk) / 2
-                  : (bestYesBid ?? bestYesAsk);
-        const out = m.ticker.split("-").pop();
-        implied.push({ out, mid });
-        const c = (x) => x != null ? (Math.round(x * 100) + "c").padStart(4) : "  - ";
-        console.log(`  ${out.padEnd(5)} mid ${c(mid)}   bid ${c(bestYesBid)} / ask ${c(bestYesAsk)}`);
-      }
-      const sum = implied.reduce((s, x) => s + (x.mid || 0), 0);
-      if (sum > 0) {
-        console.log(`\n  market implied probabilities (de-vigged):`);
-        implied.forEach((x) => console.log(`  ${x.out.padEnd(5)} ${(100 * (x.mid || 0) / sum).toFixed(1)}%`));
-      } else {
-        console.log(`\n  no live pricing yet (book not open)`);
-      }
+      await showImplied(ms, (m) => m.ticker.split("-").pop());
       break;
     }
     case "market":   j(await req("GET", `/markets/${f._[0]}`)); break;
@@ -167,7 +195,20 @@ async function main() {
     }
     case "cancel":  j(await req("DELETE", `/portfolio/orders/${f._[0]}`)); break;
     default:
-      console.log("commands: balance | markets | market <T> | orderbook <T> | positions | orders | bet <T> <yes|no> <count> <price> | cancel <id>");
+      console.log([
+        "kalshi.js — read odds & trade on any Kalshi market",
+        "",
+        "  event <EVENT_TICKER>                  de-vigged probabilities for any event",
+        "  odds <A> <B> [--date YYMMMDD]         World Cup head-to-head shortcut",
+        "  markets [--series S] [--status open]  list markets in a series",
+        "  market <TICKER>                       raw market JSON",
+        "  orderbook <TICKER>                    raw order book",
+        "  balance | positions | orders          account state (auth)",
+        "  bet <TICKER> <yes|no> <count> <cents> place an order (auth)",
+        "  cancel <ORDER_ID>                     cancel a resting order (auth)",
+        "",
+        "  env: KALSHI_ENV=demo|prod  KALSHI_KEY_ID=...  KALSHI_KEY_PATH=...",
+      ].join("\n"));
   }
 }
 

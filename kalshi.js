@@ -98,6 +98,112 @@ async function priceOf(ticker) {
   return { bid, ask, mid };
 }
 
+// ---- Position sizing: fractional Kelly with guardrails -------------------
+// Binary contract: buy YES at price p (dollars, 0-1), pays $1 if it hits.
+// Full Kelly fraction of bankroll: f* = (q - p) / (1 - p)  where q = our prob.
+// We bet a FRACTION of that (default quarter-Kelly) and clamp it hard.
+const STRAT = {
+  bankroll: parseFloat(process.env.KALSHI_BANKROLL || "1000"), // $ total
+  minEdge: 0.05,         // need 5+ pts of edge vs market or we don't bet at all
+  minBet: 5,             // below $5 it's not worth the slippage
+};
+
+// Conviction dial: how hard I press when I feel good about one.
+// Each tier sets the Kelly fraction AND the caps. "bold" loosens both so a
+// high-conviction play can actually move the needle. This is the "spend more
+// on the ones you're comfortable with / make bold bets" knob.
+const CONVICTION = {
+  low:  { kelly: 0.15, maxFrac: 0.03, maxBet: 50 },   // toe in the water
+  med:  { kelly: 0.25, maxFrac: 0.05, maxBet: 100 },  // default, quarter-Kelly
+  high: { kelly: 0.40, maxFrac: 0.08, maxBet: 160 },  // I like this one
+  bold: { kelly: 0.60, maxFrac: 0.12, maxBet: 250 },  // swing
+};
+
+// AgentCup calibration board (lower Brier = sharper caller). Updated as
+// matchdays settle. Used to weight an ensemble probability — we trust the
+// models that have been calling it better, not a flat average.
+const MODELS = {
+  grok:   { brier: 0.372 },
+  ava:    { brier: 0.387 },
+  fable:  { brier: 0.387 },
+  gpt:    { brier: 0.407 },
+  gemini: { brier: 0.419 },
+};
+
+// Inverse-Brier-squared blend: a sharp model gets exponentially more say.
+// probs = { ava: 0.55, grok: 0.50, ... } for the SAME outcome.
+function blendProb(probs) {
+  const live = liveBrier();   // ledger-updated weights, seeds until bets settle
+  let wsum = 0, psum = 0; const parts = [];
+  for (const [m, p] of Object.entries(probs)) {
+    const brier = live[m]?.brier ?? MODELS[m]?.brier ?? 0.40;
+    const w = 1 / (brier * brier);
+    wsum += w; psum += w * p;
+    parts.push({ m, p, w });
+  }
+  const q = psum / wsum;
+  for (const x of parts) x.share = x.w / wsum; // normalized trust weight
+  return { q, parts };
+}
+
+// ---- Bet ledger: every bet recorded, every settlement updates trust ------
+// betledger.json lives next to this file. Each entry: ticker, side, contracts,
+// price, our blended prob, per-model probs, conviction, outcome (null until
+// settled). Settled entries feed recalibration: each model's live Brier is
+// recomputed from its actual betting calls, and those weights override the
+// static AgentCup seeds in MODELS. The system gets sharper as it settles.
+const LEDGER_PATH = require("path").join(__dirname, "betledger.json");
+function loadLedger() {
+  try { return JSON.parse(require("fs").readFileSync(LEDGER_PATH, "utf8")); }
+  catch { return { bets: [] }; }
+}
+function saveLedger(l) { require("fs").writeFileSync(LEDGER_PATH, JSON.stringify(l, null, 2)); }
+
+// Live recalibration: Brier from settled ledger bets, blended with the
+// AgentCup seed so one fluke doesn't whipsaw the weights early on.
+function liveBrier() {
+  const l = loadLedger();
+  const settled = l.bets.filter(b => b.outcome != null && b.modelProbs);
+  const acc = {};
+  for (const b of settled) {
+    const y = b.outcome ? 1 : 0;
+    for (const [m, p] of Object.entries(b.modelProbs)) {
+      (acc[m] = acc[m] || []).push((p - y) ** 2);
+    }
+  }
+  const out = {};
+  for (const m of Object.keys(MODELS)) {
+    const seed = MODELS[m].brier;
+    const obs = acc[m];
+    if (!obs || !obs.length) { out[m] = { brier: seed, n: 0 }; continue; }
+    const live = obs.reduce((a, x) => a + x, 0) / obs.length;
+    // weight live evidence by sample size: n/(n+4) live, rest seed
+    const k = obs.length / (obs.length + 4);
+    out[m] = { brier: +(k * live + (1 - k) * seed).toFixed(3), n: obs.length };
+  }
+  return out;
+}
+
+function sizeBet({ q, p, bankroll = STRAT.bankroll, conviction = "med" }) {
+  const c = CONVICTION[conviction] || CONVICTION.med;
+  const edge = q - p;                       // our prob minus market price
+  if (edge < STRAT.minEdge) {
+    return { stake: 0, contracts: 0, edge, conviction, reason: `edge ${(edge*100).toFixed(1)}pts < ${STRAT.minEdge*100}pt threshold` };
+  }
+  const fullKelly = (q - p) / (1 - p);      // optimal growth fraction
+  const frac = Math.max(0, fullKelly) * c.kelly;
+  let stake = bankroll * frac;
+  const capFrac = bankroll * c.maxFrac;
+  let cap = `${conviction} kelly`;
+  if (stake > capFrac) { stake = capFrac; cap = `${(c.maxFrac*100).toFixed(0)}% bankroll (${conviction})`; }
+  if (stake > c.maxBet) { stake = c.maxBet; cap = `$${c.maxBet} cap (${conviction})`; }
+  if (stake < STRAT.minBet) {
+    return { stake: 0, contracts: 0, edge, conviction, reason: `sized $${stake.toFixed(2)} < $${STRAT.minBet} min` };
+  }
+  const contracts = Math.floor(stake / p); // each YES contract costs $p
+  return { stake: contracts * p, contracts, edge, fullKelly, frac, cap, conviction };
+}
+
 // De-vig a group of mutually-exclusive markets into normalized probabilities.
 // Works for ANY Kalshi event: sports, Fed decisions, elections, weather, etc.
 async function showImplied(markets, labelOf) {
@@ -169,6 +275,115 @@ async function main() {
       if (!ms.length) { console.log(`no ${series} market for ${a}/${b}` + (f.date ? ` on ${f.date}` : "")); break; }
       console.log(`\n${ms[0].title}`);
       await showImplied(ms, (m) => m.ticker.split("-").pop());
+      break;
+    }
+    case "size": {
+      // size <MARKET_TICKER> <my_prob 0-1> [--bankroll 1000]
+      // Pulls the live ask, compares to our probability, recommends a stake.
+      // e.g. node kalshi.js size KXWCGAME-26JUN12USAPAR-USA 0.55
+      const ticker = f._[0];
+      const q = parseFloat(f._[1]);
+      if (!ticker || isNaN(q)) throw new Error("usage: size <MARKET_TICKER> <my_prob 0-1> [--bankroll N]");
+      const bankroll = f.bankroll ? parseFloat(f.bankroll) : STRAT.bankroll;
+      const conviction = f.conviction || "med";
+      const pr = await priceOf(ticker);
+      const p = pr.ask;  // we'd pay the ask to buy YES
+      if (p == null) { console.log(`no live ask on ${ticker} (book not open)`); break; }
+      const r = sizeBet({ q, p, bankroll, conviction });
+      console.log(`\n${ticker}  [conviction: ${conviction}]`);
+      console.log(`  our prob:     ${(q*100).toFixed(1)}%`);
+      console.log(`  market ask:   ${(p*100).toFixed(0)}c  (implied ${(p*100).toFixed(1)}%)`);
+      console.log(`  edge:         ${(r.edge*100).toFixed(1)} pts`);
+      if (r.contracts > 0) {
+        console.log(`\n  ✅ BET: ${r.contracts} contracts @ ${(p*100).toFixed(0)}c  =  $${r.stake.toFixed(2)}`);
+        console.log(`     (${(r.frac*100).toFixed(1)}% of $${bankroll} bankroll, capped by ${r.cap})`);
+        console.log(`     win → +$${(r.contracts*(1-p)).toFixed(2)}   lose → -$${r.stake.toFixed(2)}`);
+        console.log(`\n  place: node kalshi.js bet ${ticker} yes ${r.contracts} ${Math.round(p*100)}`);
+      } else {
+        console.log(`\n  ⛔ NO BET: ${r.reason}`);
+      }
+      break;
+    }
+    case "blend": {
+      // blend <MARKET_TICKER> --ava 0.55 --grok 0.50 --fable 0.52 [--conviction high]
+      // Ensemble probability weighted by AgentCup Brier scores (sharper model =
+      // more say), then sized. This is the "trust the models that have been
+      // calling it better" knob.
+      const ticker = f._[0];
+      if (!ticker) throw new Error("usage: blend <MARKET_TICKER> --ava 0.55 --grok 0.50 ... [--conviction med]");
+      const probs = {};
+      for (const m of Object.keys(MODELS)) if (f[m] != null) probs[m] = parseFloat(f[m]);
+      if (!Object.keys(probs).length) throw new Error("give at least one model prob, e.g. --ava 0.55");
+      const { q, parts } = blendProb(probs);
+      console.log(`\nensemble for ${ticker}:`);
+      for (const x of parts.sort((a,b) => b.share - a.share))
+        console.log(`  ${x.m.padEnd(7)} ${(x.p*100).toFixed(0).padStart(3)}%  (trust ${(x.share*100).toFixed(0)}%, brier ${MODELS[x.m].brier})`);
+      console.log(`  → blended prob: ${(q*100).toFixed(1)}%`);
+      // hand off to sizing against the live ask
+      const conviction = f.conviction || "med";
+      const bankroll = f.bankroll ? parseFloat(f.bankroll) : STRAT.bankroll;
+      const pr = await priceOf(ticker);
+      if (pr.ask == null) { console.log(`\nno live ask on ${ticker} (book not open)`); break; }
+      const r = sizeBet({ q, p: pr.ask, bankroll, conviction });
+      console.log(`\n  market ask:   ${(pr.ask*100).toFixed(0)}c   edge: ${(r.edge*100).toFixed(1)} pts   [conviction: ${conviction}]`);
+      if (r.contracts > 0) {
+        console.log(`  ✅ BET: ${r.contracts} @ ${(pr.ask*100).toFixed(0)}c = $${r.stake.toFixed(2)}  (capped by ${r.cap})`);
+        console.log(`     win → +$${(r.contracts*(1-pr.ask)).toFixed(2)}   lose → -$${r.stake.toFixed(2)}`);
+        console.log(`\n  place: node kalshi.js bet ${ticker} yes ${r.contracts} ${Math.round(pr.ask*100)}`);
+      } else {
+        console.log(`  ⛔ NO BET: ${r.reason}`);
+      }
+      break;
+    }
+    case "log": {
+      // log <MARKET_TICKER> <side> <contracts> <price_cents> --q 0.55 [--ava 0.55 --grok 0.50 ...] [--conviction high] [--note "..."]
+      // Record a placed bet in the ledger. Per-model probs power recalibration.
+      const [ticker, side, n, cents] = f._;
+      if (!ticker || !side || !n || !cents) throw new Error("usage: log <ticker> <yes|no> <contracts> <price_cents> --q 0.55 [--ava ... --grok ...]");
+      const modelProbs = {};
+      for (const m of Object.keys(MODELS)) if (f[m] != null) modelProbs[m] = parseFloat(f[m]);
+      const l = loadLedger();
+      l.bets.push({
+        id: l.bets.length + 1, ts: new Date().toISOString(), ticker, side,
+        contracts: +n, price: +cents / 100, stake: +(+n * +cents / 100).toFixed(2),
+        q: f.q ? parseFloat(f.q) : null,
+        modelProbs: Object.keys(modelProbs).length ? modelProbs : null,
+        conviction: f.conviction || "med", note: f.note || null, outcome: null,
+      });
+      saveLedger(l);
+      console.log(`logged bet #${l.bets.length}: ${side.toUpperCase()} ${n}x ${ticker} @ ${cents}c ($${(+n * +cents / 100).toFixed(2)})`);
+      break;
+    }
+    case "settle": {
+      // settle <bet_id> <won|lost>
+      const [id, res] = f._;
+      if (!id || !["won", "lost"].includes(res)) throw new Error("usage: settle <bet_id> <won|lost>");
+      const l = loadLedger();
+      const b = l.bets.find(x => x.id === +id);
+      if (!b) throw new Error(`no bet #${id}`);
+      b.outcome = res === "won";
+      b.pnl = b.outcome ? +(b.contracts * (1 - b.price)).toFixed(2) : -b.stake;
+      saveLedger(l);
+      console.log(`bet #${id} ${res}: ${b.pnl >= 0 ? "+" : ""}$${b.pnl.toFixed(2)}`);
+      break;
+    }
+    case "ledger": {
+      // ledger — P&L summary + current model trust weights
+      const l = loadLedger();
+      if (!l.bets.length) { console.log("ledger empty, no bets yet"); break; }
+      let pnl = 0, staked = 0, w = 0, n = 0;
+      console.log("");
+      for (const b of l.bets) {
+        const status = b.outcome == null ? "⏳ open" : b.outcome ? `✅ +$${b.pnl.toFixed(2)}` : `❌ -$${b.stake.toFixed(2)}`;
+        console.log(`  #${b.id}  ${b.ticker}  ${b.side.toUpperCase()} ${b.contracts}x @ ${(b.price*100).toFixed(0)}c  $${b.stake.toFixed(2)}  [${b.conviction}]  ${status}`);
+        staked += b.stake;
+        if (b.outcome != null) { pnl += b.pnl; n++; if (b.outcome) w++; }
+      }
+      console.log(`\n  ${l.bets.length} bets, $${staked.toFixed(2)} staked | settled ${n} (${w}W-${n-w}L) | P&L ${pnl >= 0 ? "+" : ""}$${pnl.toFixed(2)}`);
+      const live = liveBrier();
+      console.log(`\n  model trust (live brier, settled bets):`);
+      for (const [m, v] of Object.entries(live).sort((a,b) => a[1].brier - b[1].brier))
+        console.log(`    ${m.padEnd(7)} ${v.brier}  (${v.n} settled)`);
       break;
     }
     case "market":   j(await req("GET", `/markets/${f._[0]}`)); break;

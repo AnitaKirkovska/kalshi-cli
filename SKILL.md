@@ -99,6 +99,17 @@ Always test against **demo** first (`KALSHI_ENV=demo`). Demo and prod are separa
 | `orders` | resting orders (auth) |
 | `bet <TICKER> <yes\|no> <count> <price_cents> [--type limit\|market]` | place an order (auth). Price in cents 1-99. |
 | `cancel <ORDER_ID>` | cancel a resting order (auth) |
+| `size <TICKER> <my_prob> [--conviction low\|med\|high\|bold] [--bankroll N]` | fractional-Kelly stake recommendation vs the live ask. No bet under 5pts edge. |
+| `blend <TICKER> --ava 0.55 --grok 0.50 ... [--conviction X]` | Brier-weighted ensemble of model probs (sharper model = more say), then sizes the bet. |
+| `log <TICKER> <yes\|no> <count> <price_cents> --q 0.55 [--ava ... --grok ...]` | record a placed bet in `betledger.json` |
+| `settle <bet_id> <won\|lost>` | settle a bet; P&L recorded, model trust weights update from real outcomes |
+| `ledger` | P&L summary + current live model trust weights |
+
+## Sizing strategy (fractional Kelly + conviction dial)
+
+Stake = bankroll x Kelly fraction x conviction tier, hard-capped. Tiers: `low` (0.15x Kelly, 3%/$50 cap), `med` (0.25x, 5%/$100, default), `high` (0.40x, 8%/$160), `bold` (0.60x, 12%/$250). Minimum 5pts edge vs market or no bet, $5 minimum stake. Bankroll defaults to $1000, override with `KALSHI_BANKROLL` or `--bankroll`.
+
+The ensemble (`blend`) weights each model by inverse Brier squared. After bets settle (`settle`), live Brier scores from actual outcomes blend into the seed weights (n/(n+4) shrinkage), so the system trusts whoever has actually been calling it better.
 
 ## De-vigging (why the percentages add to 100)
 

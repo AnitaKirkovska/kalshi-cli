@@ -333,6 +333,19 @@ async function main() {
       } else {
         console.log(`  ⛔ NO BET: ${r.reason}`);
       }
+      // Persist EVERY evaluation (bet or skip) so no decision is silent.
+      {
+        const l = loadLedger();
+        if (!l.decisions) l.decisions = [];
+        l.decisions.push({
+          ts: new Date().toISOString(), ticker, q: +q.toFixed(4),
+          ask: pr.ask, edge: +r.edge.toFixed(4), conviction,
+          decision: r.contracts > 0 ? "bet" : "skip",
+          contracts: r.contracts || 0, stake: r.stake || 0,
+          reason: r.contracts > 0 ? null : r.reason,
+        });
+        saveLedger(l);
+      }
       break;
     }
     case "log": {
@@ -365,6 +378,37 @@ async function main() {
       b.pnl = b.outcome ? +(b.contracts * (1 - b.price)).toFixed(2) : -b.stake;
       saveLedger(l);
       console.log(`bet #${id} ${res}: ${b.pnl >= 0 ? "+" : ""}$${b.pnl.toFixed(2)}`);
+      break;
+    }
+    case "bank": {
+      // bank — JSON snapshot for the site: live balance, open positions, ledger P&L
+      const [bal, pos] = await Promise.all([
+        req("GET", "/portfolio/balance"),
+        req("GET", "/portfolio/positions"),
+      ]);
+      const l = loadLedger();
+      let pnl = 0, settledN = 0, wins = 0;
+      for (const b of l.bets) if (b.outcome != null) { pnl += b.pnl; settledN++; if (b.outcome) wins++; }
+      const positions = (pos.market_positions || [])
+        .filter(p => p.position !== 0)
+        .map(p => ({
+          ticker: p.ticker,
+          contracts: p.position,
+          exposure: +(Math.abs(p.market_exposure ?? p.total_traded ?? 0) / 100).toFixed(2),
+        }));
+      const out = {
+        ts: Date.now(),
+        balance: +(bal.balance / 100).toFixed(2),
+        invested: +positions.reduce((a, p) => a + p.exposure, 0).toFixed(2),
+        positions,
+        bets: l.bets.map(b => ({
+          ticker: b.ticker, side: b.side, contracts: b.contracts,
+          price: b.price, stake: b.stake, conviction: b.conviction,
+          outcome: b.outcome, pnl: b.pnl ?? null, ts: b.ts, note: b.note,
+        })),
+        settled: settledN, wins, pnl: +pnl.toFixed(2),
+      };
+      console.log(JSON.stringify(out, null, 2));
       break;
     }
     case "ledger": {

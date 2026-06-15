@@ -12,7 +12,7 @@
  *
  * Usage:
  *   node kalshi.js balance
- *   node kalshi.js markets [--series KXWORLDCUP] [--status open] [--limit 50]
+ *   node kalshi.js markets [--series KXPRESPARTY] [--status open] [--limit 50]
  *   node kalshi.js market <TICKER>
  *   node kalshi.js orderbook <TICKER>
  *   node kalshi.js positions
@@ -119,27 +119,23 @@ const CONVICTION = {
   bold: { kelly: 0.60, maxFrac: 0.12, maxBet: 250 },  // swing
 };
 
-// AgentCup calibration board (lower Brier = sharper caller). Updated as
-// matchdays settle. Used to weight an ensemble probability — we trust the
-// models that have been calling it better, not a flat average.
-const MODELS = {
-  grok:   { brier: 0.372 },
-  ava:    { brier: 0.387 },
-  fable:  { brier: 0.387 },
-  gpt:    { brier: 0.407 },
-  gemini: { brier: 0.419 },
-};
+// Default Brier seed for a model with no settled track record yet.
+// 0.25 is the no-skill baseline for a binary forecast (a flat 50/50 guess).
+// Lower Brier = sharper caller. Override per-model with --brier-<name>.
+const DEFAULT_BRIER = 0.25;
 
-// Inverse-Brier-squared blend: a sharp model gets exponentially more say.
-// probs = { ava: 0.55, grok: 0.50, ... } for the SAME outcome.
-function blendProb(probs) {
-  const live = liveBrier();   // ledger-updated weights, seeds until bets settle
+// Inverse-Brier-squared blend: a sharper model gets exponentially more say.
+// Pass any number of named model probabilities for the SAME outcome, e.g.
+//   blend <TICKER> --modelA 0.55 --modelB 0.50 --brier-modelA 0.30
+// With no track record and no --brier overrides, this is a flat average.
+function blendProb(probs, briers = {}) {
+  const live = liveBrier(Object.keys(probs), briers);
   let wsum = 0, psum = 0; const parts = [];
   for (const [m, p] of Object.entries(probs)) {
-    const brier = live[m]?.brier ?? MODELS[m]?.brier ?? 0.40;
+    const brier = live[m]?.brier ?? briers[m] ?? DEFAULT_BRIER;
     const w = 1 / (brier * brier);
     wsum += w; psum += w * p;
-    parts.push({ m, p, w });
+    parts.push({ m, p, w, brier });
   }
   const q = psum / wsum;
   for (const x of parts) x.share = x.w / wsum; // normalized trust weight
@@ -151,7 +147,7 @@ function blendProb(probs) {
 // price, our blended prob, per-model probs, conviction, outcome (null until
 // settled). Settled entries feed recalibration: each model's live Brier is
 // recomputed from its actual betting calls, and those weights override the
-// static AgentCup seeds in MODELS. The system gets sharper as it settles.
+// each model's seed brier. The system gets sharper as bets settle.
 const LEDGER_PATH = require("path").join(__dirname, "betledger.json");
 function loadLedger() {
   try { return JSON.parse(require("fs").readFileSync(LEDGER_PATH, "utf8")); }
@@ -159,9 +155,11 @@ function loadLedger() {
 }
 function saveLedger(l) { require("fs").writeFileSync(LEDGER_PATH, JSON.stringify(l, null, 2)); }
 
-// Live recalibration: Brier from settled ledger bets, blended with the
-// AgentCup seed so one fluke doesn't whipsaw the weights early on.
-function liveBrier() {
+// Live recalibration: Brier from settled ledger bets, blended with each
+// model's seed so one fluke doesn't whipsaw the weights early on. Pass the
+// model names you're blending and any per-model seed overrides (--brier-<name>);
+// anything unseeded falls back to DEFAULT_BRIER.
+function liveBrier(modelNames = [], briers = {}) {
   const l = loadLedger();
   const settled = l.bets.filter(b => b.outcome != null && b.modelProbs);
   const acc = {};
@@ -171,9 +169,11 @@ function liveBrier() {
       (acc[m] = acc[m] || []).push((p - y) ** 2);
     }
   }
+  // recalibrate every model we have a seed/name for, plus any seen in ledger
+  const names = new Set([...modelNames, ...Object.keys(briers), ...Object.keys(acc)]);
   const out = {};
-  for (const m of Object.keys(MODELS)) {
-    const seed = MODELS[m].brier;
+  for (const m of names) {
+    const seed = briers[m] ?? DEFAULT_BRIER;
     const obs = acc[m];
     if (!obs || !obs.length) { out[m] = { brier: seed, n: 0 }; continue; }
     const live = obs.reduce((a, x) => a + x, 0) / obs.length;
@@ -250,8 +250,8 @@ async function main() {
     case "event": {
       // event <EVENT_TICKER>  — de-vigged implied probabilities for ANY Kalshi event.
       // Works across every category: sports, Fed, elections, weather, etc.
-      // e.g. node kalshi.js event KXWCGAME-26JUN12USAPAR
-      //      node kalshi.js event KXPRESPARTY-2028
+      // e.g. node kalshi.js event KXPRESPARTY-2028
+      //      node kalshi.js event KXHIGHNY-26JUN12
       const et = f._[0];
       if (!et) throw new Error("usage: event <EVENT_TICKER>");
       const d = await req("GET", `/events/${et}?with_nested_markets=true`);
@@ -263,10 +263,15 @@ async function main() {
       break;
     }
     case "odds": {
-      // odds <CODE_A> <CODE_B> [--date YYMMMDD] [--series KXWCGAME]
-      // Convenience wrapper for World Cup head-to-heads. For anything else use `event`.
-      const series = f.series || "KXWCGAME";
+      // odds <CODE_A> <CODE_B> --series <SERIES> [--date YYMMMDD]
+      // Convenience wrapper: finds the event in a series whose ticker contains
+      // both outcome codes (in either order) and prints its de-vigged probs.
+      // Handy for head-to-head style series. For anything else, use `event`.
+      // e.g. node kalshi.js odds DEM REP --series KXPRESPARTY
+      const series = f.series;
+      if (!series) throw new Error("usage: odds <CODE_A> <CODE_B> --series <SERIES> [--date YYMMMDD]");
       const [a, b] = f._.map((s) => s.toUpperCase());
+      if (!a || !b) throw new Error("usage: odds <CODE_A> <CODE_B> --series <SERIES> [--date YYMMMDD]");
       const d = await req("GET", `/markets?series_ticker=${series}&status=open&limit=500`);
       const ms = (d.markets || []).filter((m) =>
         (m.ticker.includes(a + b) || m.ticker.includes(b + a)) &&
@@ -280,7 +285,7 @@ async function main() {
     case "size": {
       // size <MARKET_TICKER> <my_prob 0-1> [--bankroll 1000]
       // Pulls the live ask, compares to our probability, recommends a stake.
-      // e.g. node kalshi.js size KXWCGAME-26JUN12USAPAR-USA 0.55
+      // e.g. node kalshi.js size KXPRESPARTY-2028-DEM 0.55
       const ticker = f._[0];
       const q = parseFloat(f._[1]);
       if (!ticker || isNaN(q)) throw new Error("usage: size <MARKET_TICKER> <my_prob 0-1> [--bankroll N]");
@@ -305,19 +310,28 @@ async function main() {
       break;
     }
     case "blend": {
-      // blend <MARKET_TICKER> --ava 0.55 --grok 0.50 --fable 0.52 [--conviction high]
-      // Ensemble probability weighted by AgentCup Brier scores (sharper model =
-      // more say), then sized. This is the "trust the models that have been
-      // calling it better" knob.
+      // blend <MARKET_TICKER> --<model> 0.55 --<model2> 0.50 ... [--conviction high]
+      // Ensemble probability across any number of named models, weighted by each
+      // model's Brier score (sharper model = more say). With no track record and
+      // no --brier-<model> overrides, it's a flat average. Optionally seed a
+      // model's skill with --brier-<model> 0.30 (lower = sharper).
+      // e.g. blend KXPRESPARTY-2028-DEM --polls 0.55 --model 0.50 --brier-polls 0.20
       const ticker = f._[0];
-      if (!ticker) throw new Error("usage: blend <MARKET_TICKER> --ava 0.55 --grok 0.50 ... [--conviction med]");
-      const probs = {};
-      for (const m of Object.keys(MODELS)) if (f[m] != null) probs[m] = parseFloat(f[m]);
-      if (!Object.keys(probs).length) throw new Error("give at least one model prob, e.g. --ava 0.55");
-      const { q, parts } = blendProb(probs);
+      if (!ticker) throw new Error("usage: blend <MARKET_TICKER> --<model> 0.55 --<model2> 0.50 ... [--conviction med]");
+      // Reserved flags are CLI options, not model names.
+      const reserved = new Set(["conviction", "bankroll", "type", "series", "date", "limit", "status", "q", "note", "action"]);
+      const probs = {}, briers = {};
+      for (const [k, v] of Object.entries(f)) {
+        if (k === "_" || reserved.has(k) || v == null) continue;
+        if (k.startsWith("brier-")) { briers[k.slice(6)] = parseFloat(v); continue; }
+        probs[k] = parseFloat(v);
+      }
+      if (!Object.keys(probs).length) throw new Error("give at least one model prob, e.g. --model 0.55");
+      const { q, parts } = blendProb(probs, briers);
+      const pad = Math.max(7, ...parts.map(x => x.m.length));
       console.log(`\nensemble for ${ticker}:`);
       for (const x of parts.sort((a,b) => b.share - a.share))
-        console.log(`  ${x.m.padEnd(7)} ${(x.p*100).toFixed(0).padStart(3)}%  (trust ${(x.share*100).toFixed(0)}%, brier ${MODELS[x.m].brier})`);
+        console.log(`  ${x.m.padEnd(pad)} ${(x.p*100).toFixed(0).padStart(3)}%  (trust ${(x.share*100).toFixed(0)}%, brier ${x.brier})`);
       console.log(`  → blended prob: ${(q*100).toFixed(1)}%`);
       // hand off to sizing against the live ask
       const conviction = f.conviction || "med";
@@ -349,12 +363,16 @@ async function main() {
       break;
     }
     case "log": {
-      // log <MARKET_TICKER> <side> <contracts> <price_cents> --q 0.55 [--ava 0.55 --grok 0.50 ...] [--conviction high] [--note "..."]
+      // log <MARKET_TICKER> <side> <contracts> <price_cents> --q 0.55 [--<model> 0.55 ...] [--conviction high] [--note "..."]
       // Record a placed bet in the ledger. Per-model probs power recalibration.
       const [ticker, side, n, cents] = f._;
-      if (!ticker || !side || !n || !cents) throw new Error("usage: log <ticker> <yes|no> <contracts> <price_cents> --q 0.55 [--ava ... --grok ...]");
+      if (!ticker || !side || !n || !cents) throw new Error("usage: log <ticker> <yes|no> <contracts> <price_cents> --q 0.55 [--<model> ... ]");
       const modelProbs = {};
-      for (const m of Object.keys(MODELS)) if (f[m] != null) modelProbs[m] = parseFloat(f[m]);
+      const logReserved = new Set(["conviction", "bankroll", "type", "series", "date", "limit", "status", "q", "note", "action"]);
+      for (const [k, v] of Object.entries(f)) {
+        if (k === "_" || logReserved.has(k) || k.startsWith("brier-") || v == null) continue;
+        modelProbs[k] = parseFloat(v);
+      }
       const l = loadLedger();
       l.bets.push({
         id: l.bets.length + 1, ts: new Date().toISOString(), ticker, side,
@@ -458,7 +476,7 @@ async function main() {
         "kalshi.js — read odds & trade on any Kalshi market",
         "",
         "  event <EVENT_TICKER>                  de-vigged probabilities for any event",
-        "  odds <A> <B> [--date YYMMMDD]         World Cup head-to-head shortcut",
+        "  odds <A> <B> --series <S> [--date ..] head-to-head shortcut within a series",
         "  markets [--series S] [--status open]  list markets in a series",
         "  market <TICKER>                       raw market JSON",
         "  orderbook <TICKER>                    raw order book",

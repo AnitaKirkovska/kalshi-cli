@@ -9,15 +9,15 @@ The headline trick: it pulls the market's **de-vigged implied probabilities** fo
 ```bash
 # 📊 any event, de-vigged probabilities, no auth needed:
 KALSHI_ENV=prod node kalshi.js event KXPRESPARTY-2028
-KALSHI_ENV=prod node kalshi.js event KXWCGAME-26JUN12USAPAR
+KALSHI_ENV=prod node kalshi.js event KXHIGHNY-26JUN12
 
 # 🔍 browse + inspect:
-KALSHI_ENV=prod node kalshi.js markets --series KXWCGAME --limit 20
+KALSHI_ENV=prod node kalshi.js markets --series KXPRESPARTY --limit 20
 KALSHI_ENV=prod node kalshi.js orderbook KXPRESPARTY-2028-DEM
 
 # 🔐 authenticated (needs a Kalshi API key):
 node kalshi.js balance
-node kalshi.js bet KXWCGAME-26JUN12USAPAR-USA yes 10 47
+node kalshi.js bet KXPRESPARTY-2028-DEM yes 10 47
 ```
 
 `event` reads each outcome's order book and prints clean, de-vigged probabilities:
@@ -49,7 +49,7 @@ Real prices live in the **order book**: `GET /markets/{ticker}/orderbook`. The t
 The `event` and `odds` commands do this math for you.
 
 ### 3️⃣ Books open near event time ⏰
-Liquidity is thin until an event is close or live. A market can sit `active` for days with an empty book, then fill within hours. A *live* World Cup match showed ~$24M volume with deep two-sided books. Empty book ≠ bug.
+Liquidity is thin until an event is close or live. A market can sit `active` for days with an empty book, then fill within hours. A *live* event with a close finish showed ~$24M volume with deep two-sided books. Empty book ≠ bug.
 
 ## 🔑 Auth
 
@@ -70,7 +70,7 @@ Each request signs `timestamp_ms + METHOD + path` with **RSA-PSS / SHA256**, bas
 | command | what it does |
 |---|---|
 | `event <EVENT_TICKER>` | 🎯 de-vigged probabilities for **any** event (the workhorse) |
-| `odds <A> <B> [--date YYMMMDD]` | ⚽ World Cup head-to-head shortcut |
+| `odds <A> <B> --series <S> [--date YYMMMDD]` | 🎯 head-to-head shortcut within a series |
 | `markets [--series S] [--status open] [--limit N]` | 📋 list markets in a series |
 | `market <TICKER>` / `orderbook <TICKER>` | 🔍 raw market / order book JSON |
 | `balance` / `positions` / `orders` | 💰 account state (auth) |
@@ -81,21 +81,11 @@ Each request signs `timestamp_ms + METHOD + path` with **RSA-PSS / SHA256**, bas
 
 Everything on Kalshi nests as **series → event → markets**:
 
-- **Series** = a recurring template (`KXWCGAME`, `KXPRESPARTY`, `KXHIGHNY`). List them: `GET /series?category=Sports` (or `Politics`, `Economics`, `Climate`…).
-- **Event** = one instance (`KXWCGAME-26JUN12USAPAR`, `KXPRESPARTY-2028`). Feed this to `event`.
+- **Series** = a recurring template (`KXPRESPARTY`, `KXHIGHNY`, `KXFED`). List them: `GET /series?category=Politics` (or `Sports`, `Economics`, `Climate`…).
+- **Event** = one instance (`KXPRESPARTY-2028`, `KXHIGHNY-26JUN12`). Feed this to `event`.
 - **Market** = one yes/no outcome inside an event (`...-USA`, `...-DEM`). This is what you `bet` on.
 
 Browse the live UI at [kalshi.com](https://kalshi.com) and the URL slugs map straight to these tickers.
-
-## ⚽ World Cup quick reference (2026)
-
-| series | what |
-|---|---|
-| `KXWCGAME` | 3-way match winner, e.g. `KXWCGAME-26JUN12USAPAR-USA` / `-TIE` / `-PAR` |
-| `KXWCSCORE` | exact correct-score binaries |
-| `KXMENWORLDCUP` | tournament winner |
-
-Ticker dates are `YYMMMDD` uppercase (`26JUN12`); team codes are 3-letter. The `odds USA PAR --date 26JUN12` shortcut just resolves these for you.
 
 ## 🧮 What "de-vigging" means
 
@@ -109,4 +99,4 @@ The outcome prices in an event sum to **more** than 100% (that's the house edge,
 
 ---
 
-Born from 🏆 [AgentCup](https://agentcup.co), generalized for any market. MIT.
+MIT.

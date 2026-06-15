@@ -17,15 +17,15 @@ The CLI lives next to this skill: **`kalshi.js`** (Node, no external deps). Node
 ```bash
 # any event, de-vigged probabilities, no auth needed:
 KALSHI_ENV=prod node kalshi.js event KXPRESPARTY-2028
-KALSHI_ENV=prod node kalshi.js event KXWCGAME-26JUN12USAPAR
+KALSHI_ENV=prod node kalshi.js event KXHIGHNY-26JUN12
 
 # browse + inspect:
-KALSHI_ENV=prod node kalshi.js markets --series KXWCGAME --limit 20
+KALSHI_ENV=prod node kalshi.js markets --series KXPRESPARTY --limit 20
 KALSHI_ENV=prod node kalshi.js orderbook KXPRESPARTY-2028-DEM
 
 # authenticated (needs a key, see Auth):
 node kalshi.js balance
-node kalshi.js bet KXWCGAME-26JUN12USAPAR-USA yes 10 47
+node kalshi.js bet KXPRESPARTY-2028-DEM yes 10 47
 ```
 
 ## The three things that will trip you up
@@ -57,15 +57,15 @@ The big one. `GET /markets` and `GET /markets/{ticker}` return `yes_bid`, `yes_a
 The `event`/`odds` commands already do all of this. If you ever query prices yourself, hit the orderbook, never trust the summary fields.
 
 ### 3. Books open near event time
-Kalshi liquidity is thin until an event is close or live. A market can be `status: active` for days with a genuinely empty orderbook, then fill in within hours. "Empty book" ≠ "bug." A live World Cup match showed ~$24M volume with 29-63 levels per side.
+Kalshi liquidity is thin until an event is close or live. A market can be `status: active` for days with a genuinely empty orderbook, then fill in within hours. "Empty book" ≠ "bug." A live, closely-contested event showed ~$24M volume with 29-63 levels per side.
 
 ## How Kalshi is structured (series → event → market)
 
 Everything nests three levels deep. Understanding this is how you find any ticker:
 
-- **Series** = a recurring template. e.g. `KXWCGAME` (a World Cup game), `KXPRESPARTY` (presidential winner by party), `KXHIGHNY` (NYC high temp), `KXFED` (Fed rate decision). Discover them: `GET /series?category=Sports` (also `Politics`, `Economics`, `Climate`, `Entertainment`, ...).
-- **Event** = one instance of a series. e.g. `KXWCGAME-26JUN12USAPAR`, `KXPRESPARTY-2028`. Feed this to the `event` command.
-- **Market** = one yes/no outcome inside an event. e.g. `KXWCGAME-26JUN12USAPAR-USA`, `KXPRESPARTY-2028-DEM`. This is what you place a `bet` on.
+- **Series** = a recurring template. e.g. `KXPRESPARTY` (presidential winner by party), `KXHIGHNY` (NYC high temp), `KXFED` (Fed rate decision). Discover them: `GET /series?category=Politics` (also `Sports`, `Economics`, `Climate`, `Entertainment`, ...).
+- **Event** = one instance of a series. e.g. `KXPRESPARTY-2028`, `KXHIGHNY-26JUN12`. Feed this to the `event` command.
+- **Market** = one yes/no outcome inside an event. e.g. `KXPRESPARTY-2028-DEM`, `KXHIGHNY-26JUN12-B85`. This is what you place a `bet` on.
 
 Get all outcomes of an event at once: `GET /events/{event_ticker}?with_nested_markets=true`. That's what `event` uses, and it's the generic path that works for any category.
 
@@ -90,7 +90,7 @@ Always test against **demo** first (`KALSHI_ENV=demo`). Demo and prod are separa
 | command | what it does |
 |---|---|
 | `event <EVENT_TICKER>` | reads each outcome's orderbook and prints de-vigged probabilities. The workhorse, works for any category. |
-| `odds <A> <B> [--date YYMMMDD] [--series KXWCGAME]` | World Cup head-to-head shortcut (resolves team codes to a `KXWCGAME` event). For anything non-WC, use `event`. |
+| `odds <A> <B> --series <S> [--date YYMMMDD]` | head-to-head shortcut: finds the event in a series whose ticker contains both codes. For anything else, use `event`. |
 | `markets [--series S] [--status open] [--limit N]` | list markets in a series |
 | `market <TICKER>` | raw market JSON |
 | `orderbook <TICKER>` | raw orderbook |
@@ -100,8 +100,8 @@ Always test against **demo** first (`KALSHI_ENV=demo`). Demo and prod are separa
 | `bet <TICKER> <yes\|no> <count> <price_cents> [--type limit\|market]` | place an order (auth). Price in cents 1-99. |
 | `cancel <ORDER_ID>` | cancel a resting order (auth) |
 | `size <TICKER> <my_prob> [--conviction low\|med\|high\|bold] [--bankroll N]` | fractional-Kelly stake recommendation vs the live ask. No bet under 5pts edge. |
-| `blend <TICKER> --ava 0.55 --grok 0.50 ... [--conviction X]` | Brier-weighted ensemble of model probs (sharper model = more say), then sizes the bet. |
-| `log <TICKER> <yes\|no> <count> <price_cents> --q 0.55 [--ava ... --grok ...]` | record a placed bet in `betledger.json` |
+| `blend <TICKER> --<model> 0.55 --<model2> 0.50 ... [--conviction X]` | Brier-weighted ensemble of any number of named model probs (sharper model = more say; flat average with no track record), then sizes the bet. Seed skill with `--brier-<model>`. |
+| `log <TICKER> <yes\|no> <count> <price_cents> --q 0.55 [--<model> ... ]` | record a placed bet in `betledger.json` |
 | `settle <bet_id> <won\|lost>` | settle a bet; P&L recorded, model trust weights update from real outcomes |
 | `ledger` | P&L summary + current live model trust weights |
 
@@ -114,14 +114,6 @@ The ensemble (`blend`) weights each model by inverse Brier squared. After bets s
 ## De-vigging (why the percentages add to 100)
 
 The outcomes of an event have prices that sum to >100% because of the spread/vig. Normalize: `prob_i = mid_i / sum(mids)`. That's the market's true implied probability for each outcome. Compare to your model's probability; bet the side where your number is higher (positive expected value).
-
-## World Cup quick reference (2026)
-
-- **`KXWCGAME`** — 3-way match winner. Events like `KXWCGAME-26JUN12USAPAR`; markets `-USA` / `-TIE` / `-PAR`.
-- **`KXWCSCORE`** — exact correct-score binaries (`...-GER9CUW1` = Germany 9, opponent 1).
-- **`KXWCSPREAD`**, **`KXWCTOTAL`**, **`KXWCTEAMH2H`** (advance-further), **`KXMENWORLDCUP`** / **`KXMWORLDCUP`** (tournament winner).
-
-Ticker date format is `YYMMMDD` uppercase, e.g. `26JUN12`. Team codes are 3-letter (USA, PAR, CAN, BIH). The `odds USA PAR --date 26JUN12` shortcut just resolves these into an event for you.
 
 ## Betting discipline
 

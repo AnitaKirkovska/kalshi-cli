@@ -103,7 +103,7 @@ async function priceOf(ticker) {
 // Full Kelly fraction of bankroll: f* = (q - p) / (1 - p)  where q = our prob.
 // We bet a FRACTION of that (default quarter-Kelly) and clamp it hard.
 const STRAT = {
-  bankroll: parseFloat(process.env.KALSHI_BANKROLL || "985"), // $ total — live settled basis (updated nightly from real balance). $985.32 prod balance after Jun 14 settlements, ignoring the still-open IRI stake.
+  bankroll: parseFloat(process.env.KALSHI_BANKROLL || "980"), // $ total — live settled basis (updated nightly from real balance). $979.61 prod balance after Jun 16 settlements (Iran loss closed the IRI bet; AUT-JOR open stake $5.60 not included).
   minEdge: 0.05,         // need 5+ pts of edge vs market or we don't bet at all
   minBet: 5,             // below $5 it's not worth the slippage
 };

@@ -103,10 +103,27 @@ async function priceOf(ticker) {
 // Full Kelly fraction of bankroll: f* = (q - p) / (1 - p)  where q = our prob.
 // We bet a FRACTION of that (default quarter-Kelly) and clamp it hard.
 const STRAT = {
-  bankroll: parseFloat(process.env.KALSHI_BANKROLL || "980"), // $ total — live settled basis (updated nightly from real balance). $979.61 prod balance after Jun 16 settlements (Iran loss closed the IRI bet; AUT-JOR open stake $5.60 not included).
-  minEdge: 0.05,         // need 5+ pts of edge vs market or we don't bet at all
+  bankroll: parseFloat(process.env.KALSHI_BANKROLL || "936"), // $ total — live settled basis (updated nightly from real balance). $936.31 prod balance after Jun 17 settlements (GHA-PAN -$51.30, AUT-JOR gut-play +$2.20).
   minBet: 5,             // below $5 it's not worth the slippage
+  // The 5pt edge threshold (legacy minEdge) is no longer one number.
+  // Jun 17 review: 3-way winner autobet reads went 0W-4L while TIE reads went
+  // 1W-1L. The market is harder to beat on outright winners — Kalshi's book
+  // has tighter retail pricing there than on draws. So we tighten only there.
+  minEdge: 0.05,         // base gap (TIE + exact-score markets keep this)
+  minEdgeWinner: 0.10,   // 3-way winner markets: 10pts edge or skip (per Jun 17 grad)
 };
+// Ticker -> market-type helper. Anything ending -TIE is a draw market (Kalshi
+// uses -DRAW in some series, -TIE in KXWCGAME). Anything starting KXWCSCORE is
+// an exact-score market. Everything else under KXWCGAME is a 3-way winner.
+function marketType(ticker) {
+  if (typeof ticker !== "string") return "winner";
+  if (ticker.startsWith("KXWCSCORE")) return "exact";
+  if (/-(TIE|DRAW)$/.test(ticker))    return "tie";
+  return "winner";
+}
+function minEdgeFor(ticker) {
+  return marketType(ticker) === "winner" ? STRAT.minEdgeWinner : STRAT.minEdge;
+}
 
 // Conviction dial: how hard I press when I feel good about one.
 // Each tier sets the Kelly fraction AND the caps. "bold" loosens both so a
@@ -193,11 +210,14 @@ function liveBrier() {
   return out;
 }
 
-function sizeBet({ q, p, bankroll = STRAT.bankroll, conviction = "med" }) {
+function sizeBet({ q, p, bankroll = STRAT.bankroll, conviction = "med", ticker = null }) {
   const c = CONVICTION[conviction] || CONVICTION.med;
   const edge = q - p;                       // our prob minus market price
-  if (edge < STRAT.minEdge) {
-    return { stake: 0, contracts: 0, edge, conviction, reason: `edge ${(edge*100).toFixed(1)}pts < ${STRAT.minEdge*100}pt threshold` };
+  const minE  = minEdgeFor(ticker);
+  const mType = marketType(ticker);
+  if (edge < minE) {
+    return { stake: 0, contracts: 0, edge, conviction, ticker, marketType: mType,
+             reason: `edge ${(edge*100).toFixed(1)}pts < ${minE*100}pt ${mType} threshold` };
   }
   const fullKelly = (q - p) / (1 - p);      // optimal growth fraction
   const frac = Math.max(0, fullKelly) * c.kelly;
@@ -319,7 +339,7 @@ async function main() {
       const pr = await priceOf(ticker);
       const p = pr.ask;  // we'd pay the ask to buy YES
       if (p == null) { console.log(`no live ask on ${ticker} (book not open)`); break; }
-      const r = sizeBet({ q, p, bankroll, conviction });
+      const r = sizeBet({ q, p, bankroll, conviction, ticker });
       console.log(`\n${ticker}  [conviction: ${conviction}]`);
       console.log(`  our prob:     ${(q*100).toFixed(1)}%`);
       console.log(`  market ask:   ${(p*100).toFixed(0)}c  (implied ${(p*100).toFixed(1)}%)`);
@@ -354,8 +374,8 @@ async function main() {
       const bankroll = f.bankroll ? parseFloat(f.bankroll) : STRAT.bankroll;
       const pr = await priceOf(ticker);
       if (pr.ask == null) { console.log(`\nno live ask on ${ticker} (book not open)`); break; }
-      const r = sizeBet({ q, p: pr.ask, bankroll, conviction });
-      console.log(`\n  market ask:   ${(pr.ask*100).toFixed(0)}c   edge: ${(r.edge*100).toFixed(1)} pts   [conviction: ${conviction}]`);
+      const r = sizeBet({ q, p: pr.ask, bankroll, conviction, ticker });
+      console.log(`\n  market ask:   ${(pr.ask*100).toFixed(0)}c   edge: ${(r.edge*100).toFixed(1)} pts   [conviction: ${conviction}]   market type: ${r.marketType}`);
       if (r.contracts > 0) {
         console.log(`  ✅ BET: ${r.contracts} @ ${(pr.ask*100).toFixed(0)}c = $${r.stake.toFixed(2)}  (capped by ${r.cap})`);
         console.log(`     win → +$${(r.contracts*(1-pr.ask)).toFixed(2)}   lose → -$${r.stake.toFixed(2)}`);

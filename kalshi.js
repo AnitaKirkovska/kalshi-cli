@@ -103,7 +103,7 @@ async function priceOf(ticker) {
 // Full Kelly fraction of bankroll: f* = (q - p) / (1 - p)  where q = our prob.
 // We bet a FRACTION of that (default quarter-Kelly) and clamp it hard.
 const STRAT = {
-  bankroll: parseFloat(process.env.KALSHI_BANKROLL || "936"), // $ total — live settled basis (updated nightly from real balance). $936.31 prod balance after Jun 17 settlements (GHA-PAN -$51.30, AUT-JOR gut-play +$2.20).
+  bankroll: parseFloat(process.env.KALSHI_BANKROLL || "426.58"), // $ total — live settled basis (updated nightly from real balance). $426.58 prod balance after Jul 2 POR-CRO loss (-$50.00). Real balance is ground truth; ledger P&L differs by ~$3 from exited-bet fees.
   minBet: 5,             // below $5 it's not worth the slippage
   // The 5pt edge threshold (legacy minEdge) is no longer one number.
   // Jun 17 review: 3-way winner autobet reads went 0W-4L while TIE reads went
@@ -174,7 +174,13 @@ function loadLedger() {
   try { return JSON.parse(require("fs").readFileSync(LEDGER_PATH, "utf8")); }
   catch { return { bets: [] }; }
 }
-function saveLedger(l) { require("fs").writeFileSync(LEDGER_PATH, JSON.stringify(l, null, 2)); }
+function saveLedger(l) {
+  // Atomic write: write to temp then rename. Prevents partial-write
+  // corruption when concurrent cron runs interleave on betledger.json.
+  const tmp = LEDGER_PATH + ".tmp";
+  require("fs").writeFileSync(tmp, JSON.stringify(l, null, 2));
+  require("fs").renameSync(tmp, LEDGER_PATH);
+}
 
 // Kalshi trading fee, charged on entry only (settlement is free):
 //   fee = 0.07 * contracts * price * (1 - price), kept to sub-cent precision.
@@ -516,15 +522,22 @@ async function main() {
     case "bet": {
       const [ticker, side, count, price] = f._;
       if (!ticker || !side || !count) throw new Error("usage: bet <TICKER> <yes|no> <count> <price_cents> [--type limit|market] [--action buy|sell]");
+      const orderType = f.type || "limit";
+      // MARKET ORDER GUARD (Jul 3, 2026): market orders bypass price caps and
+      // caused $489.56 in losses (bets #8-15) when the LLM placed them via
+      // direct API calls. Reject by default; require explicit --force-market.
+      if (orderType === "market" && !f["force-market"]) {
+        throw new Error("MARKET orders blocked by guardrail (Jul 3). Use --type limit with a price. If you truly need a market order, add --force-market (still capped by sizeBet).");
+      }
       const order = {
         ticker,
         action: f.action || "buy",     // "buy" to open, "sell" to close/exit a held position
         side,                          // "yes" | "no"
         count: parseInt(count, 10),
-        type: f.type || "limit",
+        type: orderType,
         client_order_id: crypto.randomUUID(),
       };
-      if ((f.type || "limit") === "limit") {
+      if (orderType === "limit") {
         if (!price) throw new Error("limit order needs a price in cents (1-99)");
         order[side === "yes" ? "yes_price" : "no_price"] = parseInt(price, 10);
       }
@@ -532,6 +545,87 @@ async function main() {
       break;
     }
     case "cancel":  j(await req("DELETE", `/portfolio/orders/${f._[0]}`)); break;
+    case "reconcile": {
+      // Compare prod orders against ledger. Two passes:
+      //   1. Backfill any executed buy orders missing from the ledger.
+      //   2. Detect exits — mark open bets as "exited" if a sell order exists.
+      // Caller-agnostic: catches bets placed by autobet, manual CLI, heartbeat,
+      // or any path that bypassed logging. The TUR-USA #8, NOR-FRA #9, COL-POR
+      // #10 bugs were all market orders placed OUTSIDE kalshi.js bet (no
+      // client_order_id) — logging inside the bet command wouldn't have caught
+      // them. This does.
+      let allOrders = [];
+      let cursor = "";
+      do {
+        const path = cursor ? `/portfolio/orders?cursor=${encodeURIComponent(cursor)}` : "/portfolio/orders";
+        const resp = await req("GET", path);
+        allOrders.push(...(resp.orders || []));
+        cursor = resp.cursor || "";
+      } while (cursor);
+
+      const l = loadLedger();
+      if (!l.bets) l.bets = [];
+      if (!l.decisions) l.decisions = [];
+
+      // Pass 1: Backfill missing buy orders
+      const logged = new Set(l.bets.map(b => `${b.ticker}|${b.side}`));
+      const missingBuys = allOrders.filter(o =>
+        o.status === "executed" &&
+        o.action === "buy" &&
+        !logged.has(`${o.ticker}|${o.side}`)
+      );
+      for (const o of missingBuys) {
+        const fillCount = Math.round(parseFloat(o.fill_count_fp || o.initial_count_fp || "0"));
+        const fillCost = parseFloat(o.taker_fill_cost_dollars || "0");
+        const price = fillCount > 0 ? +(fillCost / fillCount).toFixed(4) : 0;
+        const fee = Math.abs(parseFloat(o.taker_fees_dollars || "0"));
+        l.bets.push({
+          id: l.bets.length + 1,
+          ts: o.created_time,
+          ticker: o.ticker,
+          side: o.side,
+          contracts: fillCount,
+          price,
+          stake: +fillCost.toFixed(2),
+          fee: +fee.toFixed(2),
+          q: null,
+          modelProbs: null,
+          conviction: "med",
+          note: `reconciled from prod orders (type=${o.type}, oid=${(o.order_id || "").slice(0, 8)})`,
+          outcome: null,
+        });
+        console.log(`  + #${l.bets.length} ${o.ticker} ${o.side.toUpperCase()} ${fillCount}x @ ~${(price * 100).toFixed(0)}c ($${fillCost.toFixed(2)}) [${o.type}]`);
+      }
+
+      // Pass 2: Detect exits — mark open bets as "exited" if a sell order
+      // exists for the same ticker. P&L = sell proceeds - buy stake - fees.
+      const sellsByTicker = {};
+      for (const o of allOrders) {
+        if (o.status === "executed" && o.action === "sell") {
+          if (!sellsByTicker[o.ticker]) sellsByTicker[o.ticker] = { proceeds: 0, fees: 0 };
+          sellsByTicker[o.ticker].proceeds += parseFloat(o.taker_fill_cost_dollars || "0");
+          sellsByTicker[o.ticker].fees += Math.abs(parseFloat(o.taker_fees_dollars || "0"));
+        }
+      }
+      let exitedCount = 0;
+      for (const b of l.bets) {
+        if (b.outcome !== null) continue;
+        const sell = sellsByTicker[b.ticker];
+        if (!sell) continue;
+        b.outcome = "exited";
+        b.pnl = +(sell.proceeds - b.stake - sell.fees - (b.fee || 0)).toFixed(2);
+        exitedCount++;
+        console.log(`  \u21a9\ufe0f  #${b.id} ${b.ticker} exited: pnl $${b.pnl >= 0 ? "+" : ""}${b.pnl.toFixed(2)} (sold $${sell.proceeds.toFixed(2)} - bought $${b.stake.toFixed(2)} - fees $${(sell.fees + (b.fee || 0)).toFixed(2)})`);
+      }
+
+      if (missingBuys.length || exitedCount) {
+        saveLedger(l);
+        console.log(`reconciled ${missingBuys.length} missing buy(s), ${exitedCount} exit(s) from prod orders`);
+      } else {
+        console.log(`reconcile: all ${allOrders.length} prod orders are in the ledger \u2713`);
+      }
+      break;
+    }
     default:
       console.log([
         "kalshi.js — read odds & trade on any Kalshi market",
@@ -544,6 +638,7 @@ async function main() {
         "  balance | positions | orders          account state (auth)",
         "  bet <TICKER> <yes|no> <count> <cents> place an order (auth)",
         "  cancel <ORDER_ID>                     cancel a resting order (auth)",
+        "  reconcile                             backfill any prod orders missing from the ledger (auth)",
         "",
         "  env: KALSHI_ENV=demo|prod  KALSHI_KEY_ID=...  KALSHI_KEY_PATH=...",
       ].join("\n"));

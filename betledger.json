@@ -1,0 +1,3002 @@
+{
+  "bets": [
+    {
+      "id": 1,
+      "ts": "2026-06-14T19:17:15.596Z",
+      "ticker": "KXWCGAME-26JUN14NEDJPN-TIE",
+      "side": "yes",
+      "contracts": 100,
+      "price": 0.28,
+      "stake": 28,
+      "q": 0.31,
+      "modelProbs": null,
+      "conviction": "med",
+      "note": "GUT PLAY 1of5: 1-1 read, Dutch overpriced + Japan smash-and-grab. Below 5pt bar but this is the gut-led slot",
+      "outcome": true,
+      "fee": 1.41,
+      "pnl": 70.59
+    },
+    {
+      "id": 2,
+      "ts": "2026-06-14T22:02:12.459Z",
+      "ticker": "KXWCGAME-26JUN14CIVECU-ECU",
+      "side": "yes",
+      "contracts": 62,
+      "price": 0.39,
+      "stake": 24.18,
+      "fee": 1.03,
+      "q": 0.45,
+      "modelProbs": {
+        "grok": 0.42,
+        "ava": 0.33,
+        "opus": 0.42,
+        "gpt": 0.48,
+        "gemini": 0.63
+      },
+      "conviction": "med",
+      "note": "autobet ECU-win — EXITED pre-game ~breakeven, swapped to draw to match my own 1-1 pick (coherence rule)",
+      "outcome": "exited"
+    },
+    {
+      "id": 3,
+      "ts": "2026-06-14T22:23:00.000Z",
+      "ticker": "KXWCGAME-26JUN14CIVECU-TIE",
+      "side": "yes",
+      "contracts": 62,
+      "price": 0.34,
+      "stake": 21.08,
+      "fee": 0.97,
+      "q": 0.37,
+      "modelProbs": {
+        "grok": 0.42,
+        "ava": 0.33,
+        "opus": 0.42,
+        "gpt": 0.48,
+        "gemini": 0.63
+      },
+      "conviction": "med",
+      "note": "draw bet — matches my 1-1 contest pick (draw is my top outcome at 37%). Coherence: bet never contradicts my own most-likely call.",
+      "outcome": false,
+      "pnl": -22.05
+    },
+    {
+      "id": 4,
+      "ts": "2026-06-14T22:27:00.000Z",
+      "ticker": "KXWCSCORE-26JUN14CIVECU-CIV1ECU1",
+      "side": "yes",
+      "contracts": 60,
+      "price": 0.17,
+      "stake": 10.2,
+      "fee": 0.59,
+      "q": 0.15,
+      "conviction": "low",
+      "note": "exact-score flyer on my literal 1-1 call. Longshot (~15pct vs 17c market), sized small. Backs my own scoreline pick.",
+      "outcome": false,
+      "pnl": -10.79
+    },
+    {
+      "id": 5,
+      "ts": "2026-06-16T00:13:51.947Z",
+      "ticker": "KXWCGAME-26JUN15IRINZL-IRI",
+      "side": "yes",
+      "contracts": 87,
+      "price": 0.55,
+      "stake": 47.85,
+      "fee": 1.51,
+      "q": 0.636,
+      "modelProbs": {
+        "grok": 0.66,
+        "ava": 0.58,
+        "opus": 0.65,
+        "gpt": 0.64,
+        "gemini": 0.65
+      },
+      "conviction": "med",
+      "note": "autobet 2026-06-15_iran_new-zealand home",
+      "outcome": false,
+      "pnl": -49.36
+    },
+    {
+      "id": 6,
+      "ts": "2026-06-17T03:11:46.269038Z",
+      "ticker": "KXWCGAME-26JUN17AUTJOR-AUT",
+      "side": "yes",
+      "contracts": 8,
+      "price": 0.71,
+      "stake": 5.6,
+      "fee": 0.1176,
+      "q": 0.5,
+      "modelProbs": {
+        "ava": 0.5,
+        "opus": 0.62,
+        "gpt": 0.55,
+        "grok": 0.48,
+        "gemini": 0.5
+      },
+      "conviction": "med",
+      "note": "GUT PLAY (Anita override Jun 16): I locked 2-1 Austria, conf 0.50, called it a pass because no edge in WIN market (mkt 71c). Anita called out — gut slot is the call. AUT to win = same call as my pick. Below-bar wager on the slot.",
+      "gut_play": true,
+      "match": "AUT-JOR",
+      "pick": "2-1 Austria",
+      "outcome": true,
+      "pnl": 2.2
+    },
+    {
+      "id": 7,
+      "ts": "2026-06-17T22:01:09.151Z",
+      "ticker": "KXWCGAME-26JUN17GHAPAN-PAN",
+      "side": "yes",
+      "contracts": 163,
+      "price": 0.3,
+      "stake": 48.9,
+      "fee": 2.4,
+      "q": 0.65,
+      "modelProbs": {
+        "ava": 0.65
+      },
+      "conviction": "med",
+      "note": "autobet 2026-06-17_ghana_panama away",
+      "outcome": false,
+      "pnl": -51.3
+    },
+    {
+      "id": 8,
+      "ts": "2026-06-26T03:46:40.814Z",
+      "ticker": "KXWCGAME-26JUN25TURUSA-USA",
+      "side": "yes",
+      "contracts": 215,
+      "price": 0.22,
+      "stake": 47.3,
+      "fee": 2.58,
+      "q": 0.41,
+      "modelProbs": {
+        "ava": 0.41
+      },
+      "conviction": "med",
+      "note": "autobet 2026-06-25_turkey_usa USA win (AgentCup pick 2-1 USA). 215 contracts filled at 22c via market order. Position found on prod at 2:33 AM ET, logged retroactively.",
+      "outcome": false,
+      "result": "lost",
+      "pnl": -49.88,
+      "settled_at": "2026-06-26T09:50:36.322674+00:00"
+    },
+    {
+      "id": 9,
+      "ts": "2026-06-27T03:48:13.312Z",
+      "ticker": "KXWCGAME-26JUN26NORFRA-NOR",
+      "side": "yes",
+      "contracts": 392,
+      "price": 0.12,
+      "stake": 47.04,
+      "fee": 2.9,
+      "q": null,
+      "modelProbs": null,
+      "conviction": "med",
+      "note": "autobet 2026-06-26_norway_france NOR win. AgentCup pick. France heavy favorite. 392 contracts filled at ~12c via market order (fill 18:46 UTC, ~2h pre-kickoff). Found on prod NOT in ledger - autobet ledger bug (2nd occurrence after TUR-USA #8). Decision log only shows the FRA-side skip (q=0.65 vs ask 0.71, -6pt edge). NOR-side evaluation never logged - unknown edge. Code fix still owed.",
+      "outcome": false,
+      "pnl": -49.94
+    },
+    {
+      "id": 10,
+      "ts": "2026-06-28T00:48:18.957133Z",
+      "ticker": "KXWCGAME-26JUN27COLPOR-COL",
+      "side": "yes",
+      "contracts": 190,
+      "price": 0.25,
+      "stake": 47.51,
+      "fee": 2.49,
+      "q": null,
+      "modelProbs": null,
+      "conviction": "med",
+      "note": "autobet 2026-06-27_colombia_portugal COL win. 190 contracts filled at ~25c via MARKET order (fill 00:48 UTC, during live match). Found on prod NOT in ledger - 3rd placed-but-unlogged occurrence. Different root cause: this was a market order (autobet only does limit). autobet _log_bet_direct fix does not cover manual/heartbeat-placed market orders. Decision log only shows POR-side skip (q=0.45 vs ask 0.53, -8pt edge). COL-side evaluation + bet never logged.",
+      "outcome": false,
+      "pnl": -50
+    },
+    {
+      "id": 11,
+      "ts": "2026-06-14T01:04:24.383254Z",
+      "ticker": "KXNBA-26-SAS",
+      "side": "yes",
+      "contracts": 18,
+      "price": 0.264,
+      "stake": 4.75,
+      "fee": 0.25,
+      "q": null,
+      "modelProbs": null,
+      "conviction": "med",
+      "note": "reconciled from prod orders (type=market, oid=837694d5)",
+      "outcome": "exited",
+      "pnl": 8.85
+    },
+    {
+      "id": 12,
+      "ts": "2026-06-30T21:00:29.92955Z",
+      "ticker": "KXWCADVANCE-26JUN30FRASWE-SWE",
+      "side": "yes",
+      "contracts": 157,
+      "price": 0.12,
+      "stake": 18.84,
+      "fee": 1.16,
+      "q": null,
+      "modelProbs": null,
+      "conviction": "med",
+      "note": "reconciled from prod orders (type=market, oid=bca87ee2)",
+      "outcome": false,
+      "settled_ts": "2026-07-01T16:00:00Z",
+      "settled_note": "France 3-0 Sweden (R32 Jun 30). Sweden eliminated, did not advance.",
+      "pnl": -20
+    },
+    {
+      "id": 13,
+      "ts": "2026-07-01T19:00:43.171695Z",
+      "ticker": "KXWCADVANCE-26JUL01USABIH-BIH",
+      "side": "yes",
+      "contracts": 278,
+      "price": 0.17,
+      "stake": 47.25,
+      "fee": 2.75,
+      "q": null,
+      "modelProbs": null,
+      "conviction": "med",
+      "note": "reconciled from prod orders (type=market, oid=4b430979)",
+      "outcome": false,
+      "pnl": -50
+    },
+    {
+      "id": 14,
+      "ts": "2026-07-01T17:44:12.269367Z",
+      "ticker": "KXWCADVANCE-26JUL01ENGCOD-COD",
+      "side": "yes",
+      "contracts": 989,
+      "price": 0.23,
+      "stake": 227.48,
+      "fee": 12.26,
+      "q": null,
+      "modelProbs": null,
+      "conviction": "med",
+      "note": "reconciled from prod orders (type=market, oid=93af922c)",
+      "outcome": false,
+      "pnl": -239.74
+    },
+    {
+      "id": 15,
+      "ts": "2026-07-03T00:39:35.824466Z",
+      "ticker": "KXWCADVANCE-26JUL02PORCRO-CRO",
+      "side": "yes",
+      "contracts": 123,
+      "price": 0.3898,
+      "stake": 47.95,
+      "fee": 2.05,
+      "q": null,
+      "modelProbs": null,
+      "conviction": "med",
+      "note": "reconciled from prod orders (type=market, oid=970d3fc6)",
+      "outcome": false,
+      "pnl": -50
+    },
+    {
+      "id": 16,
+      "ts": "2026-07-03T14:25:28.905393Z",
+      "ticker": "KXWCADVANCE-26JUL03ARGCPV-CPV",
+      "side": "yes",
+      "contracts": 59,
+      "price": 0.0796,
+      "stake": 4.7,
+      "fee": 0.3,
+      "q": null,
+      "modelProbs": null,
+      "conviction": "med",
+      "note": "reconciled from prod orders (type=market, oid=4e3ea896)",
+      "outcome": false,
+      "settled_ts": "2026-07-03T22:00:00Z",
+      "settled_note": "Argentina 3-2 Cape Verde (R32 Jul 3, after ET). Cape Verde eliminated, did not advance.",
+      "pnl": -5
+    },
+    {
+      "id": 17,
+      "ticker": "KXWCADVANCE-26JUL03ARGCPV-CPV",
+      "side": "yes",
+      "contracts": 198,
+      "price": 0.24,
+      "stake": 47.47,
+      "conviction": "med",
+      "outcome": false,
+      "pnl": -50,
+      "ts": "2026-07-04T00:05:07Z",
+      "note": "BYPASS bet — LLM direct API MARKET order, empty client_order_id. Reconciled from prod oid=46d3962f. Argentina won 3-2, CPV eliminated. LOST."
+    },
+    {
+      "id": 18,
+      "ticker": "KXWCADVANCE-26JUL03ARGCPV-CPV",
+      "side": "yes",
+      "contracts": 68,
+      "price": 0.28,
+      "stake": 19.04,
+      "conviction": "med",
+      "outcome": false,
+      "pnl": -20,
+      "ts": "2026-07-04T00:20:42Z",
+      "note": "BYPASS bet — LLM direct API MARKET order, empty client_order_id. Reconciled from prod oid=fc5b23cf. Argentina won 3-2, CPV eliminated. LOST."
+    }
+  ],
+  "decisions": [
+    {
+      "ts": "2026-06-13T01:26:02.287Z",
+      "ticker": "KXWCGAME-26JUN12USAPAR-USA",
+      "q": 0.77,
+      "ask": 0.75,
+      "edge": 0.02,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge 2.0pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-13T01:26:11.395Z",
+      "ticker": "KXWCGAME-26JUN12USAPAR-TIE",
+      "q": 0.16,
+      "ask": 0.18999999999999995,
+      "edge": -0.03,
+      "conviction": "low",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -3.0pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-13T20:26:35.195Z",
+      "ticker": "KXWCGAME-26JUN13QATSUI-SUI",
+      "q": 0.8326,
+      "ask": 0.94,
+      "edge": -0.1074,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -10.7pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-13T21:02:24.206Z",
+      "ticker": "KXWCGAME-26JUN13BRAMAR-BRA",
+      "q": 0.5878,
+      "ask": 0.6,
+      "edge": -0.0122,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -1.2pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-13T21:54:22.709Z",
+      "ticker": "KXWCGAME-26JUN13BRAMAR-BRA",
+      "q": 0.5878,
+      "ask": 0.5900000000000001,
+      "edge": -0.0022,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -0.2pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-14T03:48:27.245735Z",
+      "ticker": "2026-06-13_haiti_scotland#nomarket",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for HAI-SCO (backfilled in nightly review; pick was 0-1 Scotland, exact 5pts)"
+    },
+    {
+      "ts": "2026-06-14T09:02:20.727983Z",
+      "ticker": "2026-06-13_australia_turkey#cron-gap",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Match locked ~23:15 ET and kicked midnight ET, after the 23:00 cron run and before the 09:00 resume — no run ever saw it locked, so autobet never evaluated it. Backfilled in heartbeat. Pick was 0-1 Turkey; Australia won 2-0 (miss). No bet would have qualified regardless (field-consensus favorite, no model edge)."
+    },
+    {
+      "ts": "2026-06-14T16:03:49.306811Z",
+      "ticker": "2026-06-14_germany_cura-ao#nocode",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "no FIFA code for Germany / Curaçao"
+    },
+    {
+      "ts": "2026-06-14T19:03:06.320721Z",
+      "ticker": "2026-06-14_netherlands_japan#nocode",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "no FIFA code for Netherlands / Japan"
+    },
+    {
+      "ts": "2026-06-14T19:12:05.737Z",
+      "ticker": "KXWCGAME-26JUN14NEDJPN-JPN",
+      "q": 0.25,
+      "ask": 0.27,
+      "edge": -0.02,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -2.0pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-14T19:14:11.457Z",
+      "ticker": "KXWCGAME-26JUN14NEDJPN-TIE",
+      "q": 0.31,
+      "ask": 0.28,
+      "edge": 0.03,
+      "conviction": "high",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge 3.0pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-14T22:02:11.964Z",
+      "ticker": "KXWCGAME-26JUN14CIVECU-CIV",
+      "q": 0.252,
+      "ask": 0.29000000000000004,
+      "edge": -0.038,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -3.8pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-14T22:02:12.110Z",
+      "ticker": "KXWCGAME-26JUN14CIVECU-TIE",
+      "q": 0.2984,
+      "ask": 0.33999999999999997,
+      "edge": -0.0416,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -4.2pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-14T22:02:12.257Z",
+      "ticker": "KXWCGAME-26JUN14CIVECU-ECU",
+      "q": 0.4496,
+      "ask": 0.39,
+      "edge": 0.0596,
+      "conviction": "med",
+      "decision": "bet",
+      "contracts": 62,
+      "stake": 24.18,
+      "reason": null
+    },
+    {
+      "ts": "2026-06-14T22:31:52.617732Z",
+      "ticker": "2026-06-14_ivory-coast_ecuador#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (draw) — coherence guard"
+    },
+    {
+      "ts": "2026-06-14T22:31:52.619446Z",
+      "ticker": "2026-06-14_ivory-coast_ecuador#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (draw) — coherence guard"
+    },
+    {
+      "ts": "2026-06-15T01:02:40.743Z",
+      "ticker": "KXWCGAME-26JUN14SWETUN-SWE",
+      "q": 0.486,
+      "ask": 0.51,
+      "edge": -0.024,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -2.4pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-15T01:02:40.745995Z",
+      "ticker": "2026-06-14_sweden_tunisia#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-15T01:02:40.747019Z",
+      "ticker": "2026-06-14_sweden_tunisia#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-15T01:05:43.735463Z",
+      "ticker": "2026-06-14_sweden_tunisia#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN14SWETUN-SWE2TUN1 had no ask"
+    },
+    {
+      "ts": "2026-06-15T17:34:04.140Z",
+      "ticker": "KXWCGAME-26JUN15BELEGY-BEL",
+      "q": 0.53,
+      "ask": 0.62,
+      "edge": -0.09,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -9.0pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-15T17:34:04.143942Z",
+      "ticker": "2026-06-15_belgium_egypt#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-15T17:34:04.145250Z",
+      "ticker": "2026-06-15_belgium_egypt#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-15T17:34:04.302793Z",
+      "ticker": "2026-06-15_belgium_egypt#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN15BELEGY-BEL1EGY0 had no ask"
+    },
+    {
+      "ts": "2026-06-15T21:01:24.403833Z",
+      "ticker": "2026-06-15_saudi-arabia_uruguay#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-15T21:01:24.404675Z",
+      "ticker": "2026-06-15_saudi-arabia_uruguay#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-15T21:01:24.554Z",
+      "ticker": "KXWCGAME-26JUN15KSAURU-URU",
+      "q": 0.7262,
+      "ask": 0.6799999999999999,
+      "edge": 0.0462,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge 4.6pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-15T21:01:24.706128Z",
+      "ticker": "2026-06-15_saudi-arabia_uruguay#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN15KSAURU-KSA0URU2 had no ask"
+    },
+    {
+      "ts": "2026-06-16T00:02:32.460936Z",
+      "ticker": "2026-06-15_iran_new-zealand#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-06-16T00:11:28.125378Z",
+      "ticker": "2026-06-15_saudi-arabia_uruguay#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-06-16T00:13:51.749Z",
+      "ticker": "KXWCGAME-26JUN15IRINZL-IRI",
+      "q": 0.6364,
+      "ask": 0.55,
+      "edge": 0.0864,
+      "conviction": "med",
+      "decision": "bet",
+      "contracts": 87,
+      "stake": 47.85,
+      "reason": null
+    },
+    {
+      "ts": "2026-06-16T00:13:51.952642Z",
+      "ticker": "2026-06-15_iran_new-zealand#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-16T00:13:51.953878Z",
+      "ticker": "2026-06-15_iran_new-zealand#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-16T00:13:52.089077Z",
+      "ticker": "2026-06-15_iran_new-zealand#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN15IRINZL-IRI1NZL0 had no ask"
+    },
+    {
+      "ts": "2026-06-16T18:05:37.894Z",
+      "ticker": "KXWCGAME-26JUN16FRASEN-FRA",
+      "q": 0.6392,
+      "ask": 0.6699999999999999,
+      "edge": -0.0308,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -3.1pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-16T18:05:37.897502Z",
+      "ticker": "2026-06-16_france_senegal#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-16T18:05:37.898498Z",
+      "ticker": "2026-06-16_france_senegal#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-16T18:05:38.056923Z",
+      "ticker": "2026-06-16_france_senegal#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN16FRASEN-FRA2SEN1 had no ask"
+    },
+    {
+      "ts": "2026-06-16T21:02:54.352957Z",
+      "ticker": "2026-06-16_iraq_norway#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-16T21:02:54.354185Z",
+      "ticker": "2026-06-16_iraq_norway#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-16T21:02:54.497Z",
+      "ticker": "KXWCGAME-26JUN16IRQNOR-NOR",
+      "q": 0.7122,
+      "ask": 0.81,
+      "edge": -0.0978,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -9.8pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-16T21:02:54.634703Z",
+      "ticker": "2026-06-16_iraq_norway#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN16IRQNOR-IRQ2NOR1 had no ask"
+    },
+    {
+      "ts": "2026-06-17T00:01:13.231223Z",
+      "ticker": "2026-06-16_argentina_algeria#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-06-17T03:01:54.664904Z",
+      "ticker": "2026-06-16_austria_jordan#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-06-17T09:25:31.025Z",
+      "ticker": "KXWCGAME-26JUN17PORCOD-POR",
+      "q": 0.69,
+      "ask": 0.77,
+      "edge": -0.08,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -8.0pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-17T09:25:31.029344Z",
+      "ticker": "2026-06-17_portugal_dr-congo#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-17T09:25:31.030591Z",
+      "ticker": "2026-06-17_portugal_dr-congo#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-17T09:25:31.169172Z",
+      "ticker": "2026-06-17_portugal_dr-congo#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN17PORCOD-POR3COD1 had no ask"
+    },
+    {
+      "ts": "2026-06-17T19:01:58.725Z",
+      "ticker": "KXWCGAME-26JUN17ENGCRO-ENG",
+      "q": 0.58,
+      "ask": 0.5800000000000001,
+      "edge": 0,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -0.0pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-17T19:01:58.729038Z",
+      "ticker": "2026-06-17_england_croatia#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-17T19:01:58.730375Z",
+      "ticker": "2026-06-17_england_croatia#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-17T19:01:58.875079Z",
+      "ticker": "2026-06-17_england_croatia#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN17ENGCRO-ENG3CRO1 had no ask"
+    },
+    {
+      "ts": "2026-06-17T20:00:24.239056Z",
+      "ticker": "2026-06-17_portugal_dr-congo#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-06-17T22:01:08.788041Z",
+      "ticker": "2026-06-17_ghana_panama#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-17T22:01:08.789257Z",
+      "ticker": "2026-06-17_ghana_panama#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-17T22:01:08.931Z",
+      "ticker": "KXWCGAME-26JUN17GHAPAN-PAN",
+      "q": 0.65,
+      "ask": 0.30000000000000004,
+      "edge": 0.35,
+      "conviction": "med",
+      "decision": "bet",
+      "contracts": 163,
+      "stake": 48.900000000000006,
+      "reason": null
+    },
+    {
+      "ts": "2026-06-17T22:01:09.316926Z",
+      "ticker": "2026-06-17_ghana_panama#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN17GHAPAN-GHA1PAN3 had no ask"
+    },
+    {
+      "ts": "2026-06-18T01:00:51.734978Z",
+      "ticker": "2026-06-17_uzbekistan_colombia#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-18T01:00:51.736545Z",
+      "ticker": "2026-06-17_uzbekistan_colombia#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-18T01:00:51.874Z",
+      "ticker": "KXWCGAME-26JUN17UZBCOL-COL",
+      "q": 0.6,
+      "ask": 0.72,
+      "edge": -0.12,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -12.0pts < 5pt threshold"
+    },
+    {
+      "ts": "2026-06-18T01:00:52.017959Z",
+      "ticker": "2026-06-17_uzbekistan_colombia#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN17UZBCOL-UZB1COL2 had no ask"
+    },
+    {
+      "ts": "2026-06-18T15:03:55.203Z",
+      "ticker": "KXWCGAME-26JUN18CZERSA-CZE",
+      "q": 0.6,
+      "ask": 0.54,
+      "edge": 0.06,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge 6.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-18T15:03:55.206745Z",
+      "ticker": "2026-06-18_czech-republic_south-africa#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-18T15:03:55.208082Z",
+      "ticker": "2026-06-18_czech-republic_south-africa#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-18T15:03:55.359341Z",
+      "ticker": "2026-06-18_czech-republic_south-africa#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN18CZERSA-CZE2RSA0 had no ask"
+    },
+    {
+      "ts": "2026-06-18T18:03:15.918Z",
+      "ticker": "KXWCGAME-26JUN18SUIBIH-SUI",
+      "q": 0.48,
+      "ask": 0.63,
+      "edge": -0.15,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -15.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-18T18:03:15.921294Z",
+      "ticker": "2026-06-18_switzerland_bosnia-herzegovina#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-18T18:03:15.922510Z",
+      "ticker": "2026-06-18_switzerland_bosnia-herzegovina#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-18T18:03:16.074099Z",
+      "ticker": "2026-06-18_switzerland_bosnia-herzegovina#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN18SUIBIH-SUI2BIH1 had no ask"
+    },
+    {
+      "ts": "2026-06-18T21:02:01.187Z",
+      "ticker": "KXWCGAME-26JUN18CANQAT-CAN",
+      "q": 0.62,
+      "ask": 0.76,
+      "edge": -0.14,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -14.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-18T21:02:01.191704Z",
+      "ticker": "2026-06-18_canada_qatar#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-18T21:02:01.193056Z",
+      "ticker": "2026-06-18_canada_qatar#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-18T21:02:01.348423Z",
+      "ticker": "2026-06-18_canada_qatar#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN18CANQAT-CAN2QAT0 had no ask"
+    },
+    {
+      "ts": "2026-06-19T00:01:44.487Z",
+      "ticker": "KXWCGAME-26JUN18MEXKOR-MEX",
+      "q": 0.48,
+      "ask": 0.49,
+      "edge": -0.01,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -1.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-19T00:01:44.490494Z",
+      "ticker": "2026-06-18_mexico_south-korea#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-19T00:01:44.491546Z",
+      "ticker": "2026-06-18_mexico_south-korea#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-19T00:01:44.638623Z",
+      "ticker": "2026-06-18_mexico_south-korea#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN18MEXKOR-MEX2KOR1 had no ask"
+    },
+    {
+      "ts": "2026-06-19T18:02:01.216Z",
+      "ticker": "KXWCGAME-26JUN19USAAUS-USA",
+      "q": 0.52,
+      "ask": 0.61,
+      "edge": -0.09,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -9.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-19T18:02:01.219503Z",
+      "ticker": "2026-06-19_usa_australia#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-19T18:02:01.220967Z",
+      "ticker": "2026-06-19_usa_australia#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-19T18:02:01.371222Z",
+      "ticker": "2026-06-19_usa_australia#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN19USAAUS-USA2AUS1 had no ask"
+    },
+    {
+      "ts": "2026-06-19T21:02:28.919207Z",
+      "ticker": "2026-06-19_scotland_morocco#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-19T21:02:28.920379Z",
+      "ticker": "2026-06-19_scotland_morocco#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-19T21:02:29.061Z",
+      "ticker": "KXWCGAME-26JUN19SCOMAR-MAR",
+      "q": 0.48,
+      "ask": 0.5900000000000001,
+      "edge": -0.11,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -11.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-19T21:02:29.207981Z",
+      "ticker": "2026-06-19_scotland_morocco#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN19SCOMAR-SCO1MAR2 had no ask"
+    },
+    {
+      "ts": "2026-06-19T23:33:03.530248Z",
+      "ticker": "2026-06-19_brazil_haiti#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-06-20T02:02:00.086Z",
+      "ticker": "KXWCGAME-26JUN19TURPAR-TUR",
+      "q": 0.48,
+      "ask": 0.49,
+      "edge": -0.01,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -1.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-20T02:02:00.089795Z",
+      "ticker": "2026-06-19_turkey_paraguay#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-20T02:02:00.091217Z",
+      "ticker": "2026-06-19_turkey_paraguay#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-20T02:02:00.242144Z",
+      "ticker": "2026-06-19_turkey_paraguay#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN19TURPAR-TUR2PAR1 had no ask"
+    },
+    {
+      "ts": "2026-06-20T16:05:22.489Z",
+      "ticker": "KXWCGAME-26JUN20NEDSWE-NED",
+      "q": 0.5,
+      "ask": 0.5800000000000001,
+      "edge": -0.08,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -8.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-20T16:05:22.492668Z",
+      "ticker": "2026-06-20_netherlands_sweden#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-20T16:05:22.494405Z",
+      "ticker": "2026-06-20_netherlands_sweden#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-20T16:05:22.662223Z",
+      "ticker": "2026-06-20_netherlands_sweden#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN20NEDSWE-NED2SWE1 had no ask"
+    },
+    {
+      "ts": "2026-06-20T19:03:29.519Z",
+      "ticker": "KXWCGAME-26JUN20GERCIV-GER",
+      "q": 0.6,
+      "ask": 0.7,
+      "edge": -0.1,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -10.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-20T19:03:29.522415Z",
+      "ticker": "2026-06-20_germany_ivory-coast#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-20T19:03:29.523825Z",
+      "ticker": "2026-06-20_germany_ivory-coast#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-20T19:03:29.674342Z",
+      "ticker": "2026-06-20_germany_ivory-coast#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN20GERCIV-GER2CIV1 had no ask"
+    },
+    {
+      "ts": "2026-06-20T23:04:00.209Z",
+      "ticker": "KXWCGAME-26JUN20ECUCUW-ECU",
+      "q": 0.72,
+      "ask": 0.85,
+      "edge": -0.13,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -13.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-20T23:04:00.212628Z",
+      "ticker": "2026-06-20_ecuador_cura-ao#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-20T23:04:00.213892Z",
+      "ticker": "2026-06-20_ecuador_cura-ao#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-20T23:04:00.361983Z",
+      "ticker": "2026-06-20_ecuador_cura-ao#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN20ECUCUW-ECU2CUW1 had no ask"
+    },
+    {
+      "ts": "2026-06-21T03:02:42.928989Z",
+      "ticker": "2026-06-20_tunisia_japan#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-06-21T15:05:42.606Z",
+      "ticker": "KXWCGAME-26JUN21ESPKSA-ESP",
+      "q": 0.66,
+      "ask": 0.89,
+      "edge": -0.23,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -23.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-21T15:05:42.610286Z",
+      "ticker": "2026-06-21_spain_saudi-arabia#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-21T15:05:42.611787Z",
+      "ticker": "2026-06-21_spain_saudi-arabia#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-21T15:05:42.758558Z",
+      "ticker": "2026-06-21_spain_saudi-arabia#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN21ESPKSA-ESP2KSA1 had no ask"
+    },
+    {
+      "ts": "2026-06-21T18:05:01.354Z",
+      "ticker": "KXWCGAME-26JUN21BELIRI-BEL",
+      "q": 0.52,
+      "ask": 0.7,
+      "edge": -0.18,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -18.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-21T18:05:01.357868Z",
+      "ticker": "2026-06-21_belgium_iran#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-21T18:05:01.359157Z",
+      "ticker": "2026-06-21_belgium_iran#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-21T18:05:01.516989Z",
+      "ticker": "2026-06-21_belgium_iran#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN21BELIRI-BEL2IRI1 had no ask"
+    },
+    {
+      "ts": "2026-06-21T21:05:52.686Z",
+      "ticker": "KXWCGAME-26JUN21URUCPV-URU",
+      "q": 0.6,
+      "ask": 0.7,
+      "edge": -0.1,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -10.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-21T21:05:52.689660Z",
+      "ticker": "2026-06-21_uruguay_cape-verde#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-21T21:05:52.691170Z",
+      "ticker": "2026-06-21_uruguay_cape-verde#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-21T21:05:52.842890Z",
+      "ticker": "2026-06-21_uruguay_cape-verde#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN21URUCPV-URU1CPV0 had no ask"
+    },
+    {
+      "ts": "2026-06-22T00:04:21.911733Z",
+      "ticker": "2026-06-21_new-zealand_egypt#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-22T00:04:21.913237Z",
+      "ticker": "2026-06-21_new-zealand_egypt#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-22T00:04:22.065Z",
+      "ticker": "KXWCGAME-26JUN21NZLEGY-EGY",
+      "q": 0.58,
+      "ask": 0.62,
+      "edge": -0.04,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -4.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-22T00:04:22.216637Z",
+      "ticker": "2026-06-21_new-zealand_egypt#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN21NZLEGY-NZL1EGY2 had no ask"
+    },
+    {
+      "ts": "2026-06-22T16:06:30.865Z",
+      "ticker": "KXWCGAME-26JUN22ARGAUT-ARG",
+      "q": 0.68,
+      "ask": 0.69,
+      "edge": -0.01,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -1.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-22T16:06:30.868679Z",
+      "ticker": "2026-06-22_argentina_austria#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-22T16:06:30.870162Z",
+      "ticker": "2026-06-22_argentina_austria#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-22T16:06:31.020958Z",
+      "ticker": "2026-06-22_argentina_austria#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN22ARGAUT-ARG2AUT0 had no ask"
+    },
+    {
+      "ts": "2026-06-22T20:03:24.886Z",
+      "ticker": "KXWCGAME-26JUN22FRAIRQ-FRA",
+      "q": 0.74,
+      "ask": 0.92,
+      "edge": -0.18,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -18.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-22T20:03:24.890282Z",
+      "ticker": "2026-06-22_france_iraq#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-22T20:03:24.891709Z",
+      "ticker": "2026-06-22_france_iraq#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-22T20:03:25.050187Z",
+      "ticker": "2026-06-22_france_iraq#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN22FRAIRQ-FRA3IRQ1 had no ask"
+    },
+    {
+      "ts": "2026-06-22T23:31:52.097Z",
+      "ticker": "KXWCGAME-26JUN22NORSEN-NOR",
+      "q": 0.5,
+      "ask": 0.42000000000000004,
+      "edge": 0.08,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge 8.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-22T23:31:52.101421Z",
+      "ticker": "2026-06-22_norway_senegal#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-22T23:31:52.102987Z",
+      "ticker": "2026-06-22_norway_senegal#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-22T23:31:52.250882Z",
+      "ticker": "2026-06-22_norway_senegal#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN22NORSEN-NOR2SEN1 had no ask"
+    },
+    {
+      "ts": "2026-06-23T02:06:23.918627Z",
+      "ticker": "2026-06-22_jordan_algeria#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-06-23T16:04:19.698Z",
+      "ticker": "KXWCGAME-26JUN23PORUZB-POR",
+      "q": 0.58,
+      "ask": 0.86,
+      "edge": -0.28,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -28.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-23T16:04:19.703005Z",
+      "ticker": "2026-06-23_portugal_uzbekistan#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-23T16:04:19.704894Z",
+      "ticker": "2026-06-23_portugal_uzbekistan#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-23T16:04:19.861579Z",
+      "ticker": "2026-06-23_portugal_uzbekistan#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN23PORUZB-POR1UZB0 had no ask"
+    },
+    {
+      "ts": "2026-06-23T19:11:11.775Z",
+      "ticker": "KXWCGAME-26JUN23ENGGHA-ENG",
+      "q": 0.78,
+      "ask": 0.85,
+      "edge": -0.07,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -7.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-23T19:11:11.779156Z",
+      "ticker": "2026-06-23_england_ghana#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-23T19:11:11.780710Z",
+      "ticker": "2026-06-23_england_ghana#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-23T19:11:11.942172Z",
+      "ticker": "2026-06-23_england_ghana#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN23ENGGHA-ENG3GHA1 had no ask"
+    },
+    {
+      "ts": "2026-06-23T22:03:03.102675Z",
+      "ticker": "2026-06-23_panama_croatia#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-23T22:03:03.104465Z",
+      "ticker": "2026-06-23_panama_croatia#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-23T22:03:03.256Z",
+      "ticker": "KXWCGAME-26JUN23PANCRO-CRO",
+      "q": 0.62,
+      "ask": 0.69,
+      "edge": -0.07,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -7.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-23T22:03:03.417706Z",
+      "ticker": "2026-06-23_panama_croatia#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN23PANCRO-PAN0CRO2 had no ask"
+    },
+    {
+      "ts": "2026-06-24T01:05:54.527Z",
+      "ticker": "KXWCGAME-26JUN23COLCOD-COL",
+      "q": 0.58,
+      "ask": 0.65,
+      "edge": -0.07,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -7.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-24T01:05:54.531444Z",
+      "ticker": "2026-06-23_colombia_dr-congo#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-24T01:05:54.533000Z",
+      "ticker": "2026-06-23_colombia_dr-congo#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-24T01:05:54.691418Z",
+      "ticker": "2026-06-23_colombia_dr-congo#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN23COLCOD-COL2COD1 had no ask"
+    },
+    {
+      "ts": "2026-06-24T13:00:56.670001Z",
+      "ticker": "2026-06-24_czech-republic_mexico#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-24T13:00:56.671625Z",
+      "ticker": "2026-06-24_czech-republic_mexico#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-24T13:00:56.820Z",
+      "ticker": "KXWCGAME-26JUN24CZEMEX-MEX",
+      "q": 0.48,
+      "ask": 0.53,
+      "edge": -0.05,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -5.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-24T13:00:56.985378Z",
+      "ticker": "2026-06-24_czech-republic_mexico#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN24CZEMEX-CZE1MEX2 had no ask"
+    },
+    {
+      "ts": "2026-06-24T13:00:57.431808Z",
+      "ticker": "2026-06-24_south-africa_south-korea#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-24T13:00:57.433496Z",
+      "ticker": "2026-06-24_south-africa_south-korea#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-24T13:00:57.603Z",
+      "ticker": "KXWCGAME-26JUN24RSAKOR-KOR",
+      "q": 0.45,
+      "ask": 0.5900000000000001,
+      "edge": -0.14,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -14.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-24T13:00:57.760886Z",
+      "ticker": "2026-06-24_south-africa_south-korea#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN24RSAKOR-RSA1KOR2 had no ask"
+    },
+    {
+      "ts": "2026-06-24T13:00:58.350Z",
+      "ticker": "KXWCGAME-26JUN24SUICAN-SUI",
+      "q": 0.36,
+      "ask": 0.41000000000000003,
+      "edge": -0.05,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -5.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-24T13:00:58.354296Z",
+      "ticker": "2026-06-24_switzerland_canada#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-24T13:00:58.356078Z",
+      "ticker": "2026-06-24_switzerland_canada#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-24T13:00:58.515368Z",
+      "ticker": "2026-06-24_switzerland_canada#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN24SUICAN-SUI1CAN1 had no ask"
+    },
+    {
+      "ts": "2026-06-24T13:00:59.122Z",
+      "ticker": "KXWCGAME-26JUN24BIHQAT-BIH",
+      "q": 0.62,
+      "ask": 0.71,
+      "edge": -0.09,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -9.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-24T13:00:59.126847Z",
+      "ticker": "2026-06-24_bosnia-herzegovina_qatar#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-24T13:00:59.128817Z",
+      "ticker": "2026-06-24_bosnia-herzegovina_qatar#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-24T13:00:59.284502Z",
+      "ticker": "2026-06-24_bosnia-herzegovina_qatar#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN24BIHQAT-BIH2QAT0 had no ask"
+    },
+    {
+      "ts": "2026-06-24T13:00:59.720000Z",
+      "ticker": "2026-06-24_scotland_brazil#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-24T13:00:59.721630Z",
+      "ticker": "2026-06-24_scotland_brazil#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-24T13:00:59.879Z",
+      "ticker": "KXWCGAME-26JUN24SCOBRA-BRA",
+      "q": 0.7,
+      "ask": 0.75,
+      "edge": -0.05,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -5.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-24T13:01:00.064511Z",
+      "ticker": "2026-06-24_scotland_brazil#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN24SCOBRA-SCO0BRA2 had no ask"
+    },
+    {
+      "ts": "2026-06-24T13:01:00.281421Z",
+      "ticker": "2026-06-24_morocco_haiti#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-06-25T00:03:38.742646Z",
+      "ticker": "2026-06-24_czech-republic_mexico#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-06-25T00:03:38.833506Z",
+      "ticker": "2026-06-24_south-africa_south-korea#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-06-25T19:15:20.873409Z",
+      "ticker": "2026-06-25_cura-ao_ivory-coast#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-25T19:15:20.875363Z",
+      "ticker": "2026-06-25_cura-ao_ivory-coast#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-25T19:15:21.030Z",
+      "ticker": "KXWCGAME-26JUN25CUWCIV-CIV",
+      "q": 0.6,
+      "ask": 0.83,
+      "edge": -0.23,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -23.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-25T19:15:21.180839Z",
+      "ticker": "2026-06-25_cura-ao_ivory-coast#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN25CUWCIV-CUW0CIV2 had no ask"
+    },
+    {
+      "ts": "2026-06-25T19:15:21.626321Z",
+      "ticker": "2026-06-25_ecuador_germany#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-25T19:15:21.628092Z",
+      "ticker": "2026-06-25_ecuador_germany#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-25T19:15:21.782Z",
+      "ticker": "KXWCGAME-26JUN25ECUGER-GER",
+      "q": 0.5,
+      "ask": 0.6,
+      "edge": -0.1,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -10.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-25T19:15:21.940142Z",
+      "ticker": "2026-06-25_ecuador_germany#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN25ECUGER-ECU1GER2 had no ask"
+    },
+    {
+      "ts": "2026-06-25T22:07:27.589Z",
+      "ticker": "KXWCGAME-26JUN25JPNSWE-JPN",
+      "q": 0.34,
+      "ask": 0.44999999999999996,
+      "edge": -0.11,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -11.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-25T22:07:27.593459Z",
+      "ticker": "2026-06-25_japan_sweden#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-25T22:07:27.595365Z",
+      "ticker": "2026-06-25_japan_sweden#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-25T22:07:27.750226Z",
+      "ticker": "2026-06-25_japan_sweden#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN25JPNSWE-JPN1SWE1 had no ask"
+    },
+    {
+      "ts": "2026-06-25T22:07:28.176227Z",
+      "ticker": "2026-06-25_tunisia_netherlands#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-25T22:07:28.177990Z",
+      "ticker": "2026-06-25_tunisia_netherlands#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-25T22:07:28.334Z",
+      "ticker": "KXWCGAME-26JUN25TUNNED-NED",
+      "q": 0.6,
+      "ask": 0.9,
+      "edge": -0.3,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -30.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-25T22:07:28.485176Z",
+      "ticker": "2026-06-25_tunisia_netherlands#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN25TUNNED-TUN0NED2 had no ask"
+    },
+    {
+      "ts": "2026-06-26T01:06:43.075211Z",
+      "ticker": "2026-06-25_turkey_usa#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-26T01:06:43.077841Z",
+      "ticker": "2026-06-25_turkey_usa#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-26T01:06:43.263Z",
+      "ticker": "KXWCGAME-26JUN25TURUSA-USA",
+      "q": 0.44,
+      "ask": 0.51,
+      "edge": -0.07,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -7.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-26T01:06:43.449025Z",
+      "ticker": "2026-06-25_turkey_usa#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN25TURUSA-TUR1USA2 had no ask"
+    },
+    {
+      "ts": "2026-06-26T01:06:44.267Z",
+      "ticker": "KXWCGAME-26JUN25PARAUS-PAR",
+      "q": 0.38,
+      "ask": 0.37,
+      "edge": 0.01,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge 1.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-26T01:06:44.271761Z",
+      "ticker": "2026-06-25_paraguay_australia#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-26T01:06:44.274008Z",
+      "ticker": "2026-06-25_paraguay_australia#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-26T01:06:44.448114Z",
+      "ticker": "2026-06-25_paraguay_australia#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN25PARAUS-PAR1AUS1 had no ask"
+    },
+    {
+      "ts": "2026-06-26T18:18:40.465585Z",
+      "ticker": "2026-06-26_norway_france#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-26T18:18:40.467331Z",
+      "ticker": "2026-06-26_norway_france#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-26T18:18:40.619Z",
+      "ticker": "KXWCGAME-26JUN26NORFRA-FRA",
+      "q": 0.65,
+      "ask": 0.71,
+      "edge": -0.06,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -6.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-26T18:18:40.778929Z",
+      "ticker": "2026-06-26_norway_france#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN26NORFRA-NOR0FRA2 had no ask"
+    },
+    {
+      "ts": "2026-06-26T18:18:41.376Z",
+      "ticker": "KXWCGAME-26JUN26SENIRQ-SEN",
+      "q": 0.68,
+      "ask": 0.8,
+      "edge": -0.12,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -12.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-26T18:18:41.380399Z",
+      "ticker": "2026-06-26_senegal_iraq#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-26T18:18:41.382151Z",
+      "ticker": "2026-06-26_senegal_iraq#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-26T18:18:41.546126Z",
+      "ticker": "2026-06-26_senegal_iraq#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN26SENIRQ-SEN3IRQ1 had no ask"
+    },
+    {
+      "ts": "2026-06-26T23:21:06.967Z",
+      "ticker": "KXWCGAME-26JUN26CPVKSA-CPV",
+      "q": 0.44,
+      "ask": 0.36,
+      "edge": 0.08,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge 8.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-26T23:21:06.971942Z",
+      "ticker": "2026-06-26_cape-verde_saudi-arabia#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-26T23:21:06.973728Z",
+      "ticker": "2026-06-26_cape-verde_saudi-arabia#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-26T23:21:07.118159Z",
+      "ticker": "2026-06-26_cape-verde_saudi-arabia#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN26CPVKSA-CPV2KSA1 had no ask"
+    },
+    {
+      "ts": "2026-06-26T23:21:07.528578Z",
+      "ticker": "2026-06-26_uruguay_spain#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-26T23:21:07.530242Z",
+      "ticker": "2026-06-26_uruguay_spain#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-26T23:21:07.675Z",
+      "ticker": "KXWCGAME-26JUN26URUESP-ESP",
+      "q": 0.62,
+      "ask": 0.5900000000000001,
+      "edge": 0.03,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge 3.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-26T23:21:07.820470Z",
+      "ticker": "2026-06-26_uruguay_spain#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN26URUESP-URU1ESP2 had no ask"
+    },
+    {
+      "ts": "2026-06-27T00:14:10.735113Z",
+      "ticker": "2026-06-26_egypt_iran#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (draw) — coherence guard"
+    },
+    {
+      "ts": "2026-06-27T00:14:10.877Z",
+      "ticker": "KXWCGAME-26JUN26EGYIRI-TIE",
+      "q": 0.38,
+      "ask": 0.37,
+      "edge": 0.01,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge 1.0pts < 5pt tie threshold"
+    },
+    {
+      "ts": "2026-06-27T00:14:10.882707Z",
+      "ticker": "2026-06-26_egypt_iran#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (draw) — coherence guard"
+    },
+    {
+      "ts": "2026-06-27T00:14:11.031628Z",
+      "ticker": "2026-06-26_egypt_iran#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN26EGYIRI-EGY1IRI1 had no ask"
+    },
+    {
+      "ts": "2026-06-27T00:14:11.445021Z",
+      "ticker": "2026-06-26_new-zealand_belgium#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-27T00:14:11.447073Z",
+      "ticker": "2026-06-26_new-zealand_belgium#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-27T00:14:11.593Z",
+      "ticker": "KXWCGAME-26JUN26NZLBEL-BEL",
+      "q": 0.67,
+      "ask": 0.8200000000000001,
+      "edge": -0.15,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -15.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-27T00:14:11.735174Z",
+      "ticker": "2026-06-26_new-zealand_belgium#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN26NZLBEL-NZL0BEL2 had no ask"
+    },
+    {
+      "ts": "2026-06-27T20:14:47.338703Z",
+      "ticker": "2026-06-27_panama_england#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-27T20:14:47.340958Z",
+      "ticker": "2026-06-27_panama_england#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-27T20:14:47.502Z",
+      "ticker": "KXWCGAME-26JUN27PANENG-ENG",
+      "q": 0.59,
+      "ask": 0.86,
+      "edge": -0.27,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -27.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-27T20:14:47.662784Z",
+      "ticker": "2026-06-27_panama_england#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN27PANENG-PAN0ENG2 had no ask"
+    },
+    {
+      "ts": "2026-06-27T20:14:48.252Z",
+      "ticker": "KXWCGAME-26JUN27CROGHA-CRO",
+      "q": 0.53,
+      "ask": 0.55,
+      "edge": -0.02,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -2.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-27T20:14:48.257728Z",
+      "ticker": "2026-06-27_croatia_ghana#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-27T20:14:48.260034Z",
+      "ticker": "2026-06-27_croatia_ghana#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-27T20:14:48.410012Z",
+      "ticker": "2026-06-27_croatia_ghana#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN27CROGHA-CRO2GHA1 had no ask"
+    },
+    {
+      "ts": "2026-06-27T22:42:54.375619Z",
+      "ticker": "2026-06-27_colombia_portugal#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-27T22:42:54.377689Z",
+      "ticker": "2026-06-27_colombia_portugal#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-27T22:42:54.558Z",
+      "ticker": "KXWCGAME-26JUN27COLPOR-POR",
+      "q": 0.45,
+      "ask": 0.53,
+      "edge": -0.08,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -8.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-27T22:42:54.701925Z",
+      "ticker": "2026-06-27_colombia_portugal#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN27COLPOR-COL1POR2 had no ask"
+    },
+    {
+      "ts": "2026-06-27T22:42:55.257Z",
+      "ticker": "KXWCGAME-26JUN27CODUZB-COD",
+      "q": 0.36,
+      "ask": 0.5800000000000001,
+      "edge": -0.22,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -22.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-06-27T22:42:55.262849Z",
+      "ticker": "2026-06-27_dr-congo_uzbekistan#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-27T22:42:55.264733Z",
+      "ticker": "2026-06-27_dr-congo_uzbekistan#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-06-27T22:42:55.415794Z",
+      "ticker": "2026-06-27_dr-congo_uzbekistan#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUN27CODUZB-COD1UZB1 had no ask"
+    },
+    {
+      "ts": "2026-06-28T01:25:36.264531Z",
+      "ticker": "2026-06-27_algeria_austria#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-06-28T01:25:36.691200Z",
+      "ticker": "2026-06-27_jordan_argentina#home",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-28T01:25:36.693411Z",
+      "ticker": "2026-06-27_jordan_argentina#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (away) — coherence guard"
+    },
+    {
+      "ts": "2026-06-28T01:25:36.842Z",
+      "ticker": "KXWCGAME-26JUN27JORARG-ARG",
+      "q": 0.84,
+      "ask": 0.87,
+      "edge": -0.03,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -3.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-07-01T14:38:16.785Z",
+      "ticker": "KXWCGAME-26JUL01ENGCOD-ENG",
+      "q": 0.65,
+      "ask": 0.77,
+      "edge": -0.12,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -12.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-07-01T14:38:16.790348Z",
+      "ticker": "2026-07-01_england_dr-congo#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-01T14:38:16.794181Z",
+      "ticker": "2026-07-01_england_dr-congo#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-01T14:38:16.962279Z",
+      "ticker": "2026-07-01_england_dr-congo#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUL01ENGCOD-ENG2COD0 had no ask"
+    },
+    {
+      "ts": "2026-07-01T19:03:45.598Z",
+      "ticker": "KXWCGAME-26JUL01BELSEN-BEL",
+      "q": 0.35,
+      "ask": 0.47,
+      "edge": -0.12,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -12.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-07-01T19:03:45.603943Z",
+      "ticker": "2026-07-01_belgium_senegal#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-01T19:03:45.606177Z",
+      "ticker": "2026-07-01_belgium_senegal#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-01T19:03:45.816682Z",
+      "ticker": "2026-07-01_belgium_senegal#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUL01BELSEN-BEL1SEN2 had no ask"
+    },
+    {
+      "ts": "2026-07-01T23:03:47.970Z",
+      "ticker": "KXWCGAME-26JUL01USABIH-USA",
+      "q": 0.57,
+      "ask": 0.72,
+      "edge": -0.15,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -15.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-07-01T23:03:47.975807Z",
+      "ticker": "2026-07-01_usa_bosnia-herzegovina#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-01T23:03:47.978077Z",
+      "ticker": "2026-07-01_usa_bosnia-herzegovina#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-01T23:03:48.134394Z",
+      "ticker": "2026-07-01_usa_bosnia-herzegovina#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUL01USABIH-USA2BIH1 had no ask"
+    },
+    {
+      "ts": "2026-07-02T18:04:04.553Z",
+      "ticker": "KXWCGAME-26JUL02ESPAUT-ESP",
+      "q": 0.68,
+      "ask": 0.76,
+      "edge": -0.08,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -8.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-07-02T18:04:04.560537Z",
+      "ticker": "2026-07-02_spain_austria#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-02T18:04:04.565338Z",
+      "ticker": "2026-07-02_spain_austria#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-02T18:04:04.719790Z",
+      "ticker": "2026-07-02_spain_austria#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUL02ESPAUT-ESP2AUT0 had no ask"
+    },
+    {
+      "ts": "2026-07-02T22:01:34.146Z",
+      "ticker": "KXWCGAME-26JUL02PORCRO-POR",
+      "q": 0.47,
+      "ask": 0.5800000000000001,
+      "edge": -0.11,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -11.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-07-02T22:01:34.152489Z",
+      "ticker": "2026-07-02_portugal_croatia#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-02T22:01:34.154727Z",
+      "ticker": "2026-07-02_portugal_croatia#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-02T22:01:34.312956Z",
+      "ticker": "2026-07-02_portugal_croatia#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUL02PORCRO-POR2CRO1 had no ask"
+    },
+    {
+      "ts": "2026-07-03T02:02:31.081501Z",
+      "ticker": "2026-07-02_switzerland_algeria#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-07-03T17:03:06.727Z",
+      "ticker": "KXWCGAME-26JUL03AUSEGY-AUS",
+      "q": 0.36,
+      "ask": 0.27,
+      "edge": 0.09,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge 9.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-07-03T17:03:06.732535Z",
+      "ticker": "2026-07-03_australia_egypt#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-03T17:03:06.735083Z",
+      "ticker": "2026-07-03_australia_egypt#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-03T17:03:06.894266Z",
+      "ticker": "2026-07-03_australia_egypt#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUL03AUSEGY-AUS1EGY1 had no ask"
+    },
+    {
+      "ts": "2026-07-03T20:31:17.478805Z",
+      "ticker": "2026-07-03_australia_egypt#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-07-03T21:01:56.220Z",
+      "ticker": "KXWCGAME-26JUL03ARGCPV-ARG",
+      "q": 0.79,
+      "ask": 0.87,
+      "edge": -0.08,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -8.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-07-03T21:01:56.225128Z",
+      "ticker": "2026-07-03_argentina_cape-verde#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-03T21:01:56.227527Z",
+      "ticker": "2026-07-03_argentina_cape-verde#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-03T21:01:56.386652Z",
+      "ticker": "2026-07-03_argentina_cape-verde#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUL03ARGCPV-ARG3CPV0 had no ask"
+    },
+    {
+      "ts": "2026-07-04T00:33:36.935560Z",
+      "ticker": "2026-07-03_argentina_cape-verde#nomarket",
+      "decision": "skip",
+      "outcome": "home",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "Kalshi listed no market for this match"
+    },
+    {
+      "ts": "2026-07-04T00:33:37.513Z",
+      "ticker": "KXWCGAME-26JUL03COLGHA-COL",
+      "q": 0.57,
+      "ask": 0.69,
+      "edge": -0.12,
+      "conviction": "med",
+      "decision": "skip",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "edge -12.0pts < 10pt winner threshold"
+    },
+    {
+      "ts": "2026-07-04T00:33:37.519377Z",
+      "ticker": "2026-07-03_colombia_ghana#draw",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-04T00:33:37.522034Z",
+      "ticker": "2026-07-03_colombia_ghana#away",
+      "decision": "skip",
+      "outcome": "away",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "contradicts my own top pick (home) — coherence guard"
+    },
+    {
+      "ts": "2026-07-04T00:33:37.683178Z",
+      "ticker": "2026-07-03_colombia_ghana#score",
+      "decision": "skip",
+      "outcome": "draw",
+      "contracts": 0,
+      "stake": 0,
+      "reason": "exact-score market KXWCSCORE-26JUL03COLGHA-COL2GHA1 had no ask"
+    }
+  ]
+}

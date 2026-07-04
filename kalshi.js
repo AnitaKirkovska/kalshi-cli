@@ -103,7 +103,7 @@ async function priceOf(ticker) {
 // Full Kelly fraction of bankroll: f* = (q - p) / (1 - p)  where q = our prob.
 // We bet a FRACTION of that (default quarter-Kelly) and clamp it hard.
 const STRAT = {
-  bankroll: parseFloat(process.env.KALSHI_BANKROLL || "426.58"), // $ total — live settled basis (updated nightly from real balance). $426.58 prod balance after Jul 2 POR-CRO loss (-$50.00). Real balance is ground truth; ledger P&L differs by ~$3 from exited-bet fees.
+  bankroll: parseFloat(process.env.KALSHI_BANKROLL || "351.58"), // $ total — live settled basis (updated nightly from real balance). $351.58 prod balance after Jul 4 ARG-CPV bypass bets #16-18 all lost (-$75.00 total). Real balance is ground truth.
   minBet: 5,             // below $5 it's not worth the slippage
   // The 5pt edge threshold (legacy minEdge) is no longer one number.
   // Jun 17 review: 3-way winner autobet reads went 0W-4L while TIE reads went
@@ -501,11 +501,15 @@ async function main() {
         const status =
           b.outcome == null            ? "⏳ open" :
           b.outcome === "exited"       ? `↩️  exited  $${bPnl == null ? "0.00" : bPnl.toFixed(2)}` :
-          b.outcome                    ? `✅  +$${bPnl.toFixed(2)}` :
+          b.outcome === true           ? `✅  +$${bPnl.toFixed(2)}` :
                                          `❌  -$${Math.abs(bPnl ?? b.stake).toFixed(2)}`;
         console.log(`  #${b.id}  ${b.ticker}  ${b.side.toUpperCase()} ${b.contracts}x @ ${(b.price*100).toFixed(0)}c  $${b.stake.toFixed(2)}  [${b.conviction}]  ${status}`);
         staked += b.stake;
-        if (b.outcome != null && b.outcome !== "exited") { pnl += b.pnl; n++; if (b.outcome) w++; }
+        // Only boolean true/false are settled win/loss. String outcomes like
+        // "exited" or legacy "lost"/"loss" are NOT wins — truthy strings would
+        // miscount. Normalize: false-like strings → false, else skip.
+        if (b.outcome === true || b.outcome === false) { pnl += b.pnl; n++; if (b.outcome === true) w++; }
+        else if (typeof b.outcome === "string" && ["lost","loss","false"].includes(b.outcome)) { b.outcome = false; pnl += b.pnl; n++; }
         else if (b.outcome === "exited") n++;
       }
       console.log(`\n  ${l.bets.length} bets, $${staked.toFixed(2)} staked | settled ${n} (${w}W-${n-w}L) | P&L ${pnl >= 0 ? "+" : ""}$${pnl.toFixed(2)}`);

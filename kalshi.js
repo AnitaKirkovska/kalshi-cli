@@ -103,7 +103,7 @@ async function priceOf(ticker) {
 // Full Kelly fraction of bankroll: f* = (q - p) / (1 - p)  where q = our prob.
 // We bet a FRACTION of that (default quarter-Kelly) and clamp it hard.
 const STRAT = {
-  bankroll: parseFloat(process.env.KALSHI_BANKROLL || "351.58"), // $ total — live settled basis (updated nightly from real balance). $351.58 prod balance after Jul 4 ARG-CPV bypass bets #16-18 all lost (-$75.00 total). Real balance is ground truth.
+  bankroll: parseFloat(process.env.KALSHI_BANKROLL || "282.28"), // $ total — live settled basis (updated nightly from real balance). $282.28 prod balance Jul 7 after bet #21 USA-BEL won (+$22.83); $46.27 Norway futures still open on top. Real balance is ground truth.
   minBet: 5,             // below $5 it's not worth the slippage
   // The 5pt edge threshold (legacy minEdge) is no longer one number.
   // Jun 17 review: 3-way winner autobet reads went 0W-4L while TIE reads went
